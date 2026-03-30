@@ -8,15 +8,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class Users extends BaseController
 {
-    public function index()
-    {
-        $model = new UserModel();
 
-        $data['users'] = $model->findAll();
-
-        return view('users/index', $data);
-
-    }
     public function create()
     {
         return view('users/create');
@@ -56,7 +48,7 @@ class Users extends BaseController
 
     }
 
-    public function update($id)
+    public function update($id) 
     {
         $rules = [
             'name' => 'required|min_length[3]'
@@ -84,12 +76,16 @@ class Users extends BaseController
 
         $model->delete($id);
 
-        return redirect()->to('/users');
+        return redirect()->to('/users/product');
     }
 
-    public function design()
+    public function product()
     {
-        return view('users/design');
-    }
+        $model = new Usermodel();
 
+        $data['sims'] = $model->findall();
+
+
+        return view('users/product', $data);
+    }
 }

@@ -6,13 +6,13 @@ use CodeIgniter\Model;
 
 class UserModel extends Model
 {
-    protected $table            = 'users';
+    protected $table            = 'simcard_list';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name', 'email'];
+    protected $allowedFields    = ['sim_gateway', 'sim_id', 'sim_no', 'operator', 'direction', 'call_to', 'sms_to', 'date'];
 
     protected bool $allowEmptyInserts = false;  
     protected bool $updateOnlyChanged = true;
