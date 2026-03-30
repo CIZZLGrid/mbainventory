@@ -156,3 +156,28 @@ body {
     color: #fff;
     border-radius: 3px;
 }
+/* SUBMENU */
+.menu li.has-submenu {
+    position: relative;
+    cursor: pointer;
+}
+
+.menu li.has-submenu .submenu {
+    list-style: none;
+    padding-left: 20px;
+    margin-top: 5px;
+    display: none; /* hide submenu by default */
+}
+
+.menu li.has-submenu.active .submenu {
+    display: block; /* show submenu when parent has 'active' */
+}
+
+.menu li.has-submenu .submenu li {
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.menu li.has-submenu .submenu li:hover {
+    background: #1a222c;
+}
