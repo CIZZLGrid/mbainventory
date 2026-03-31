@@ -108,26 +108,113 @@ body {
 }
 
 /* TABLE */
+/* TABLE WRAPPER */
+.card {
+    overflow: hidden;
+}
+
+/* TABLE */
 .product-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 13px;
+}
+
+/* HEADER */
+.product-table thead {
+    background: #0d1117;
 }
 
 .product-table th {
-    background: #0d1117;
-    padding: 10px;
-    font-size: 13px;
-    border: 1px solid #1f2a33; /* adds vertical & horizontal lines */
+    padding: 12px;
+    text-align: left;
+    color: #9fb3c8;
+    font-weight: 600;
+    border-bottom: 2px solid #1f2a33;
+    position: sticky;
+    top: 0;
 }
 
+/* BODY */
 .product-table td {
-    padding: 10px;
-    border: 1px solid #1f2a33; /* adds vertical & horizontal lines */
+    padding: 12px;
+    border-bottom: 1px solid #1f2a33;
+    color: #e6edf3;
+}
+
+/* ROW HOVER */
+.product-table tbody tr:hover {
+    background: #1a222c;
+    transition: 0.2s;
+}
+
+/* ZEBRA STRIPES */
+.product-table tbody tr:nth-child(even) {
+    background: #121a21;
+}
+
+/* CENTER ACTIONS */
+.product-table td:last-child {
     text-align: center;
 }
 
-.product-table tr:hover {
-    background: #1a222c;
+/* IMAGE */
+.img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #2a3a45;
+}
+
+/* BUTTONS */
+.btn-edit,
+.btn-delete {
+    padding: 6px 10px;
+    border-radius: 4px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    transition: 0.2s;
+}
+
+/* EDIT */
+.btn-edit {
+    background: #29b6f6;
+}
+
+.btn-edit:hover {
+    background: #0288d1;
+}
+
+/* DELETE */
+.btn-delete {
+    background: #e53935;
+}
+
+.btn-delete:hover {
+    background: #b71c1c;
+}
+
+/* HEADER BUTTON */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* ADD BUTTON */
+.btn-add {
+    background: #1e88e5;
+    padding: 8px 14px;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-add:hover {
+    background: #1565c0;
 }
 
 /* IMAGE */
@@ -180,4 +267,67 @@ body {
 
 .menu li.has-submenu .submenu li:hover {
     background: #1a222c;
+}
+.manage{
+    text-decoration: none;
+    color: inherit;
+}
+/* FORM GRID */
+.form-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 15px;
+}
+
+/* GROUP */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* FULL WIDTH */
+.form-group.full {
+    grid-column: span 2;
+}
+
+/* LABEL */
+.form-group label {
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: #9fb3c8;
+}
+
+/* INPUT */
+.form-control {
+    padding: 10px;
+    background: #0f1720;
+    border: 1px solid #2a3a45;
+    color: #fff;
+    border-radius: 6px;
+    outline: none;
+    transition: 0.2s;
+}
+
+/* FOCUS EFFECT */
+.form-control:focus {
+    border-color: #1e88e5;
+    box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
+}
+
+/* BUTTON */
+.btn-add {
+    width: 200px;
+    padding: 10px;
+    background: #1e88e5;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+/* CENTER BUTTON */
+.form-group.full {
+    display: flex;
+    align-items: center;
 }

@@ -11,14 +11,14 @@
 
             <li class="menu-title">Sim Card Management</li>
 
-            <li><i class="fa fa-sim-card"></i> Manage Sim Card</li>
+            <li><a class="manage" href="<?= base_url('/users/product') ?>"><i class="fa fa-sim-card"></i> Manage Sim Card</a></li>
 
             <!-- Parent menu with submenu -->
             <li class="has-submenu active">
                Add Sim Card
                 <ul class="submenu">
-                    <li>Add Globe Sim Cards</li>
-                    <li>Add Smart Sim Cards</li>
+                    <li> <a class="manage" href="<?= base_url('/users/globe_sim') ?>">Add Globe Sim Cards</a></li>
+                    <li><a class="manage" href="<?= base_url('/users/smart_sim') ?>">Add Smart Sim Cards</a></li>
                 </ul>
             </li>
 

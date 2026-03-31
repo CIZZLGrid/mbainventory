@@ -6,7 +6,7 @@
     <div class="card">
 
         <div class="card-header">
-            <button class="btn-add">ADD NEW</button>
+            <button class="btn-add">ADD NEW</button>    
         </div>
 
         <table class="product-table">
@@ -39,8 +39,8 @@
 
                     
                     <td>
-                        <a class="btn-edit" href="<?= base_url('users/edit/'. $sim['id']) ?>"><i class="fa fa-edit"></i></a>
-                        <a class="btn-delete" href="<?= base_url('users/delete/'. $sim['id']) ?>" onclick="return confirm('Are you sure you want to delete this user?')"><i class="fa fa-trash"></i></a>
+                        <a class="btn-edit" href="<?= base_url('users/edit_sim/'. $sim['id']) ?>"><i class="fa fa-edit"></i></a>
+                        <a class="btn-delete" href="<?= base_url('users/delete/'. $sim['id']) ?>" onclick="return confirm('Are you sure you want to delete this row?')"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
