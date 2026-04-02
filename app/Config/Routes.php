@@ -6,6 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
+
 $routes->get('/users/product', 'Users::product');
 
 $routes->get('/users/create', 'Users::create');

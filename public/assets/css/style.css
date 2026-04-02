@@ -10,6 +10,80 @@ body {
     color: #cfd8dc;
 }
 
+/* PAGE BACKGROUND */
+.login-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0d1117, #1f2a33);
+    font-family: Arial, sans-serif;
+}
+
+/* LOGIN CARD */
+.login-box {
+    width: 350px;
+    padding: 30px;
+    background: #161b22;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    color: #fff;
+}
+
+/* TITLE */
+.login-box h1 {
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+.login-box h4 {
+    margin-bottom: 20px;
+    font-weight: normal;
+    color: #aaa;
+}
+
+/* FORM */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #ccc;
+}
+
+/* INPUT */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #2f3e46;
+    background: #0d1117;
+    color: #fff;
+    border-radius: 5px;
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: #3b82f6;
+}
+
+/* BUTTON */
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    background: #e11d48;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background: #be123c;
+}
+
 /* TOPBAR */
 .topbar {
     height: 60px;
