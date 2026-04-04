@@ -1,13 +1,11 @@
 <body>
     <div class="sidebar">
         <ul class="menu">
-            <li><i class="fa fa-home"></i> Dashboard</li>
+            <li class="blur"><i class="fa fa-home"></i> Dashboard</li>
 
-            <li class="submenu">
+            <li class="blur">
                 <i class="fa fa-user"></i> User Management
             </li>
-
-            <li><i class="fa fa-list"></i> Categories</li>
 
             <li class="menu-title">Sim Card Management</li>
 
@@ -22,7 +20,7 @@
                 </ul>
             </li>
 
-            <li><i class="fa fa-image"></i> Media Files</li>
+            <li class="blur"><i class="fa fa-image"></i> Media Files</li>
         </ul>
     </div>
     <script>

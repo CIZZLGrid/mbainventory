@@ -7,7 +7,12 @@
         <div class="card">
 
             <div class="card-header">
-                <button class="btn-add">ADD NEW</button>    
+                <button class="btn-add">ADD NEW</button>  
+                <form method="GET" action="">
+                    <div class="search-container">
+                        <input type="text" name="search" id="searchInput" placeholder="Search for Sim Card Number" />
+                    </div>
+                </form>  
             </div>
 
             <table class="product-table">
@@ -26,7 +31,8 @@
                         <th>Direction</th>
                         <th>CALL TO:</th>
                         <th>SMS TO:</th>
-                        <th>Date</th>
+                        <th>Date
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -37,7 +43,7 @@
                     <tr>
                         <td><?= $sim['sim_gateway'] ?></td>
                         <td><?= $sim['sim_id'] ?></td>
-                        <td><?= $sim['sim_no'] ?></td>
+                        <td class="sim-number"><?= $sim['sim_no'] ?></td>
                         <td class="operator"><?= $sim['operator'] ?></td>
                         <td><?= $sim['direction'] ?></td>
                         <td><?= $sim['call_to'] ?></td>
@@ -79,6 +85,37 @@
             }
         });
     });
+    
+  // 🔍 PARTIAL MATCH (typing)
+document.getElementById("searchInput").addEventListener("keyup", function () {
+    let value = this.value.toLowerCase().trim();
+    let rows = document.querySelectorAll("#tableBody tr");
+
+    rows.forEach(function(row) {
+        let simCell = row.querySelector(".sim-number");
+        if (!simCell) return;
+
+        let sim = simCell.textContent.toLowerCase().trim();
+
+        row.style.display = sim.includes(value) ? "" : "none";
+    });
+});
+
+
+// 🎯 EXACT MATCH (button click)
+document.getElementById("searchBtn").addEventListener("click", function () {
+    let value = document.getElementById("searchInput").value.toLowerCase().trim();
+    let rows = document.querySelectorAll("#tableBody tr");
+
+    rows.forEach(function(row) {
+        let simCell = row.querySelector(".sim-number");
+        if (!simCell) return;
+
+        let sim = simCell.textContent.toLowerCase().trim();
+
+        row.style.display = (sim === value) ? "" : "none";
+    });
+});
     </script>
 </body>
 

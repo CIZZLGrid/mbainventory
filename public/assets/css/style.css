@@ -124,6 +124,12 @@ body {
     background: #161b22;
     border-right: 1px solid #1f2a33;
 }
+li.blur {
+    color: #999;
+    opacity: 0.5;
+    pointer-events: none;
+    filter: blur(1px);
+}
 
 .menu {
     list-style: none;
@@ -170,6 +176,22 @@ body {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
+}
+.search-container {
+    width: 300px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
 }
 
 .btn-add {
