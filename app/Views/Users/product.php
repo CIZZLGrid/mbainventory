@@ -85,95 +85,45 @@
 
     <script>
 
-        //function for operator filter
-    document.getElementById("operatorFilter").addEventListener("change", function () {
-        let selected = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#tableBody tr");
+   function applyFilters() {
+    let operatorSelected = document.getElementById("operatorFilter").value.toLowerCase();
+    let gatewaySelected = document.getElementById("gatewayFilter").value.toLowerCase();
+    let ipSelected = document.getElementById("ipFilter").value.toLowerCase();
+    let searchValue = document.getElementById("searchInput").value.toLowerCase().trim();
+    let selectedDate = document.getElementById("dateFilter").value;
 
-        rows.forEach(function(row) {
-            let operatorCell = row.querySelector(".operator");
-            if (!operatorCell) return;
-
-            let operator = operatorCell.textContent.toLowerCase().trim();
-
-            if (selected === "all" || operator === selected) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    });
-
-     document.getElementById("gatewayFilter").addEventListener("change", function () {
-        let selected = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#tableBody tr");
-
-        rows.forEach(function(row) {
-            let gatewayCell = row.querySelector(".gateway");
-            if (!gatewayCell) return;
-
-            let gateway = gatewayCell.textContent.toLowerCase().trim();
-
-            if (selected === "all" || gateway === selected) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    });
-
-    document.getElementById("ipFilter").addEventListener("change", function () {
-        let selected = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#tableBody tr");
-
-        rows.forEach(function(row) {
-            let ipCell = row.querySelector(".ip-address");
-            if (!ipCell) return;
-
-            let ip = ipCell.textContent.toLowerCase().trim();
-
-            if (selected === "all" || ip === selected) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    });
-    
-  // search function for sim card no.
-document.getElementById("searchInput").addEventListener("keyup", function () {
-    let value = this.value.toLowerCase().trim();
     let rows = document.querySelectorAll("#tableBody tr");
 
     rows.forEach(function(row) {
-        let simCell = row.querySelector(".sim-number");
-        if (!simCell) return;
+        let operator = row.querySelector(".operator")?.textContent.toLowerCase().trim();
+        let gateway = row.querySelector(".gateway")?.textContent.toLowerCase().trim();
+        let ip = row.querySelector(".ip-address")?.textContent.toLowerCase().trim();
+        let sim = row.querySelector(".sim-number")?.textContent.toLowerCase().trim();
+        let rowDate = row.querySelector(".date")?.textContent.trim();
 
-        let sim = simCell.textContent.toLowerCase().trim();
+        let matchOperator = (operatorSelected === "all" || operator === operatorSelected);
+        let matchGateway = (gatewaySelected === "all" || gateway === gatewaySelected);
+        let matchIP = (ipSelected === "all" || ip === ipSelected);
 
-        row.style.display = sim.includes(value) ? "" : "none";
-    });
-});
+        let matchSearch = (!searchValue || sim.includes(searchValue));
 
+        let matchDate = (!selectedDate || rowDate === selectedDate);
 
-// function for date filter
-const dateFilter = document.getElementById("dateFilter");
-
-dateFilter.addEventListener("change", function() {
-    const selectedDate = this.value; // YYYY-MM-DD
-    const rows = document.querySelectorAll("#tableBody tr");
-
-    rows.forEach(row => {
-        const rowDate = row.querySelector(".date").textContent;
-
-        // Show row if date matches or hide if not
-        if (!selectedDate || rowDate === selectedDate) {
+        if (matchOperator && matchGateway && matchIP && matchSearch && matchDate) {
             row.style.display = "";
         } else {
             row.style.display = "none";
         }
     });
-});
+}
+
+document.getElementById("operatorFilter").addEventListener("change", applyFilters);
+document.getElementById("gatewayFilter").addEventListener("change", applyFilters);
+document.getElementById("ipFilter").addEventListener("change", applyFilters);
+
+document.getElementById("searchInput").addEventListener("keyup", applyFilters);
+
+document.getElementById("dateFilter").addEventListener("change", applyFilters);
 
     </script>
 </body>
