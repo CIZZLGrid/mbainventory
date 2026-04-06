@@ -12,7 +12,7 @@ class UserModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['sim_gateway', 'sim_id', 'sim_no', 'operator', 'direction', 'call_to', 'sms_to', 'date'];
+    protected $allowedFields    = ['sim_gateway', 'sim_id', 'sim_no', 'operator', 'gateway', 'ip_address' , 'plan', 'call_to', 'sms_to', 'date'];
 
     protected bool $allowEmptyInserts = false;  
     protected bool $updateOnlyChanged = true;

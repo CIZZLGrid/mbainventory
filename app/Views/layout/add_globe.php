@@ -24,8 +24,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Direction</label>
-                    <input type="text" name="direction" class="form-control">
+                    <label>Plan</label>
+                    <input type="text" name="plan" class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -36,6 +36,16 @@
                 <div class="form-group">
                     <label>SMS To</label>
                     <input type="text" name="sms_to" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Gateway</label>
+                    <input type="text" name="gateway" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>IP Address</label>
+                    <input type="text" name="ip_address" class="form-control">
                 </div>
 
                 <div class="form-group full">

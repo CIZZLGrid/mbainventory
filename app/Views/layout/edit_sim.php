@@ -9,7 +9,7 @@
             <form class="form-container" method="post" action="<?= base_url('users/update_sim/' . $sims['id']) ?>">
 
                 <div class="form-group">
-                    <label>Sim Card Slot on Gateway</label>
+                    <label>Sim Card Slot on Gateway</label> 
                     <input type="text" name="sim_gateway" class="form-control" value="<?= $sims['sim_gateway'] ?>">
                 </div>
 
@@ -24,8 +24,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Direction</label>
-                    <input type="text" name="direction" class="form-control" value="<?= $sims['direction'] ?>">
+                    <label>Plan</label>
+                    <input type="text" name="plan" class="form-control" value="<?= $sims['plan'] ?>">
                 </div>
 
                 <div class="form-group">
@@ -37,6 +37,17 @@
                     <label>SMS To</label>
                     <input type="text" name="sms_to" class="form-control" value="<?= $sims['sms_to'] ?>">
                 </div>
+
+                <div class="form-group">
+                    <label>Gateway</label>
+                    <input type="text" name="gateway" class="form-control" value="<?= $sims['gateway'] ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>IP Address</label>
+                    <input type="text" name="ip_address" class="form-control" value="<?= $sims['ip_address'] ?>">
+                </div>
+
 
                 <div class="form-group full">
                     <label>Operator</label>

@@ -7,7 +7,6 @@
         <div class="card">
 
             <div class="card-header">
-                <button class="btn-add">ADD NEW</button>  
                 <form method="GET" action="">
                     <div class="search-container">
                         <input type="text" name="search" id="searchInput" placeholder="Search for Sim Card Number" />
@@ -28,10 +27,25 @@
                                 <option value="smart">SMART</option>
                             </select>
                         </th>
-                        <th>Direction</th>
+                        <th>Gateway
+                             <select id="gatewayFilter" style="margin-left: 5px">
+                                <option value="all">ALL</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </th>
+                        <th>IP Address
+                             <select id="ipFilter" style="margin-left: 5px">
+                                <option value="all">ALL</option>
+                                <option value="10.23.144.45">10.23.144.45</option>
+                                <option value="10.23.144.46">10.23.144.46</option>
+                            </select>
+                        </th>
+                        <th>Plan</th>
                         <th>CALL TO:</th>
                         <th>SMS TO:</th>
                         <th>Date
+                            <input type="date" id="dateFilter">
                         </th>
                         <th>Actions</th>
                     </tr>
@@ -45,10 +59,12 @@
                         <td><?= $sim['sim_id'] ?></td>
                         <td class="sim-number"><?= $sim['sim_no'] ?></td>
                         <td class="operator"><?= $sim['operator'] ?></td>
-                        <td><?= $sim['direction'] ?></td>
+                        <td class="gateway"><?= $sim['gateway'] ?></td>
+                        <td class="ip-address"><?= $sim['ip_address'] ?></td>
+                        <td><?= $sim['plan'] ?></td>
                         <td><?= $sim['call_to'] ?></td>
                         <td><?= $sim['sms_to'] ?></td>
-                        <td><?= $sim['date'] ?></td>
+                        <td class="date"><?= $sim['date'] ?></td>
 
                         
                         <td>
@@ -68,6 +84,8 @@
     </div>
 
     <script>
+
+        //function for operator filter
     document.getElementById("operatorFilter").addEventListener("change", function () {
         let selected = this.value.toLowerCase();
         let rows = document.querySelectorAll("#tableBody tr");
@@ -85,8 +103,44 @@
             }
         });
     });
+
+     document.getElementById("gatewayFilter").addEventListener("change", function () {
+        let selected = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#tableBody tr");
+
+        rows.forEach(function(row) {
+            let gatewayCell = row.querySelector(".gateway");
+            if (!gatewayCell) return;
+
+            let gateway = gatewayCell.textContent.toLowerCase().trim();
+
+            if (selected === "all" || gateway === selected) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
+    document.getElementById("ipFilter").addEventListener("change", function () {
+        let selected = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#tableBody tr");
+
+        rows.forEach(function(row) {
+            let ipCell = row.querySelector(".ip-address");
+            if (!ipCell) return;
+
+            let ip = ipCell.textContent.toLowerCase().trim();
+
+            if (selected === "all" || ip === selected) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
     
-  // 🔍 PARTIAL MATCH (typing)
+  // search function for sim card no.
 document.getElementById("searchInput").addEventListener("keyup", function () {
     let value = this.value.toLowerCase().trim();
     let rows = document.querySelectorAll("#tableBody tr");
@@ -102,20 +156,25 @@ document.getElementById("searchInput").addEventListener("keyup", function () {
 });
 
 
-// 🎯 EXACT MATCH (button click)
-document.getElementById("searchBtn").addEventListener("click", function () {
-    let value = document.getElementById("searchInput").value.toLowerCase().trim();
-    let rows = document.querySelectorAll("#tableBody tr");
+// function for date filter
+const dateFilter = document.getElementById("dateFilter");
 
-    rows.forEach(function(row) {
-        let simCell = row.querySelector(".sim-number");
-        if (!simCell) return;
+dateFilter.addEventListener("change", function() {
+    const selectedDate = this.value; // YYYY-MM-DD
+    const rows = document.querySelectorAll("#tableBody tr");
 
-        let sim = simCell.textContent.toLowerCase().trim();
+    rows.forEach(row => {
+        const rowDate = row.querySelector(".date").textContent;
 
-        row.style.display = (sim === value) ? "" : "none";
+        // Show row if date matches or hide if not
+        if (!selectedDate || rowDate === selectedDate) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
     });
 });
+
     </script>
 </body>
 

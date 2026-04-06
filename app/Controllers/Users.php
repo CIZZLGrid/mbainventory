@@ -42,10 +42,13 @@ class Users extends BaseController
             'sim_gateway' => $this->request->getPost('sim_gateway'),
             'sim_id' => $this->request->getPost('sim_id'),
             'sim_no' => $this->request->getPost('sim_no'),
-            'direction' => $this->request->getPost('direction'),
+            'plan' => $this->request->getPost('plan'),
             'call_to' => $this->request->getPost('call_to'),
             'sms_to' => $this->request->getPost('sms_to'),
             'operator' => $this->request->getPost('operator'),
+            'gateway' => $this->request->getPost('gateway'),
+            'ip_address' => $this->request->getPost('ip_address'),
+
         ]);
 
         return redirect()->to('/users/product');    
@@ -58,10 +61,13 @@ class Users extends BaseController
             'sim_gateway' => $this->request->getPost('sim_gateway'),
             'sim_id' => $this->request->getPost('sim_id'),
             'sim_no' => $this->request->getPost('sim_no'),
-            'direction' => $this->request->getPost('direction'),
+            'plan' => $this->request->getPost('plan'),
             'call_to' => $this->request->getPost('call_to'),
             'sms_to' => $this->request->getPost('sms_to'),
             'operator' => $this->request->getPost('operator'),
+            'gateway' => $this->request->getPost('gateway'),
+            'ip_address' => $this->request->getPost('ip_address'),
+            
         ]);
 
         return redirect()->to('/users/product');    
@@ -82,10 +88,12 @@ class Users extends BaseController
             'sim_gateway' => $this->request->getPost('sim_gateway'),
             'sim_id' => $this->request->getPost('sim_id'),
             'sim_no' => $this->request->getPost('sim_no'),
-            'direction' => $this->request->getPost('direction'),
+            'plan' => $this->request->getPost('plan'),
             'call_to' => $this->request->getPost('call_to'),
             'sms_to' => $this->request->getPost('sms_to'),
             'operator' => $this->request->getPost('operator'),  
+            'gateway' => $this->request->getPost('gateway'),
+            'ip_address' => $this->request->getPost('ip_address'),
         ]);
          return redirect()->to('/users/product');
 
