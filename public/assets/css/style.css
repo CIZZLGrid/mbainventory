@@ -9,39 +9,6 @@ body {
     background: #0f1419;
     color: #cfd8dc;
 }
-
-/* PAGE BACKGROUND */
-.login-page {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #0d1117, #1f2a33);
-    font-family: Arial, sans-serif;
-}
-
-/* LOGIN CARD */
-.login-box {
-    width: 350px;
-    padding: 30px;
-    background: #161b22;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
-    color: #fff;
-}
-
-/* TITLE */
-.login-box h1 {
-    margin-bottom: 5px;
-    font-size: 24px;
-}
-
-.login-box h4 {
-    margin-bottom: 20px;
-    font-weight: normal;
-    color: #aaa;
-}
-
 /* FORM */
 .form-group {
     margin-bottom: 15px;
@@ -87,7 +54,7 @@ body {
 /* TOPBAR */
 .topbar {
     height: 60px;
-    background: #0d1117;
+    background: #0d1117; 
     display: flex;
     justify-content: space-between;
     align-items: center;

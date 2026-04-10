@@ -32,6 +32,8 @@
                                 <option value="all">ALL</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
                             </select>
                         </th>
                         <th>IP Address
@@ -39,9 +41,17 @@
                                 <option value="all">ALL</option>
                                 <option value="10.23.144.45">10.23.144.45</option>
                                 <option value="10.23.144.46">10.23.144.46</option>
+                                <option value="10.23.144.47">10.23.144.47</option>
+                                <option value="10.23.144.48">10.23.144.48</option>
                             </select>
                         </th>
-                        <th>Plan</th>
+                        <th>STATUS
+                             <select id="statusFilter" style="margin-left: 5px">
+                                <option value="all">ALL</option>
+                                <option value="active">ACTIVE</option>
+                                <option value="inactive">INACTIVE</option>
+                            </select>
+                        </th>
                         <th>CALL TO:</th>
                         <th>SMS TO:</th>
                         <th>Date
@@ -61,7 +71,7 @@
                         <td class="operator"><?= $sim['operator'] ?></td>
                         <td class="gateway"><?= $sim['gateway'] ?></td>
                         <td class="ip-address"><?= $sim['ip_address'] ?></td>
-                        <td><?= $sim['plan'] ?></td>
+                        <td class="plan"><?= $sim['plan'] ?></td>
                         <td><?= $sim['call_to'] ?></td>
                         <td><?= $sim['sms_to'] ?></td>
                         <td class="date"><?= $sim['date'] ?></td>
@@ -89,6 +99,7 @@
     let operatorSelected = document.getElementById("operatorFilter").value.toLowerCase();
     let gatewaySelected = document.getElementById("gatewayFilter").value.toLowerCase();
     let ipSelected = document.getElementById("ipFilter").value.toLowerCase();
+    let statusSelected = document.getElementById("statusFilter").value.toLowerCase();
     let searchValue = document.getElementById("searchInput").value.toLowerCase().trim();
     let selectedDate = document.getElementById("dateFilter").value;
 
@@ -99,17 +110,17 @@
         let gateway = row.querySelector(".gateway")?.textContent.toLowerCase().trim();
         let ip = row.querySelector(".ip-address")?.textContent.toLowerCase().trim();
         let sim = row.querySelector(".sim-number")?.textContent.toLowerCase().trim();
+        let plan = row.querySelector(".plan")?.textContent.toLowerCase().trim();
         let rowDate = row.querySelector(".date")?.textContent.trim();
 
         let matchOperator = (operatorSelected === "all" || operator === operatorSelected);
         let matchGateway = (gatewaySelected === "all" || gateway === gatewaySelected);
         let matchIP = (ipSelected === "all" || ip === ipSelected);
-
+        let matchStatus = (statusSelected === "all" || plan === statusSelected);
         let matchSearch = (!searchValue || sim.includes(searchValue));
-
         let matchDate = (!selectedDate || rowDate === selectedDate);
 
-        if (matchOperator && matchGateway && matchIP && matchSearch && matchDate) {
+        if (matchOperator && matchGateway && matchIP && matchStatus && matchSearch && matchDate) {
             row.style.display = "";
         } else {
             row.style.display = "none";
@@ -120,6 +131,7 @@
 document.getElementById("operatorFilter").addEventListener("change", applyFilters);
 document.getElementById("gatewayFilter").addEventListener("change", applyFilters);
 document.getElementById("ipFilter").addEventListener("change", applyFilters);
+document.getElementById("statusFilter").addEventListener("change", applyFilters);
 
 document.getElementById("searchInput").addEventListener("keyup", applyFilters);
 
