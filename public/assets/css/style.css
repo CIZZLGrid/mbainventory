@@ -53,7 +53,11 @@ body {
 
 /* TOPBAR */
 .topbar {
-    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* important so it stays above other elements */
+    
+    height: 90px;
     background: #0d1117; 
     display: flex;
     justify-content: space-between;
@@ -63,9 +67,21 @@ body {
 }
 
 .logo {
-    background: #b71c1c;
+    background: rgb(0, 238, 255);
     padding: 12px 20px;
     font-weight: bold;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.top-middle {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    background: rgb(0, 238, 255);
+    padding: 12px 20px;
+    font-weight: bold;
+    font-style: oblique;
     color: #fff;
 }
 
@@ -84,7 +100,7 @@ body {
 /* SIDEBAR */
 .sidebar {
     position: fixed;
-    top: 60px;
+    top: 90px;
     left: 0;
     width: 240px;
     height: 100%;
@@ -139,48 +155,26 @@ li.blur {
 }
 
 /* HEADER */
-.card-header {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
-.search-container {
-    width: 300px;
-    display: flex;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    overflow: hidden;
-    background: #fff;
-}
-
-.search-container input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-}
-
-.btn-add {
-    background: #1e88e5;
-    border: none;
-    padding: 8px 14px;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* TABLE */
 /* TABLE WRAPPER */
-.card {
-    overflow: hidden;
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 6px;
 }
 
 /* TABLE */
 .product-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
+}
+
+.search-container {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: flex-start;
+    font: bold;
+    height: 40px;
+    border-radius: 30px;
 }
 
 /* HEADER */
@@ -189,122 +183,76 @@ li.blur {
 }
 
 .product-table th {
-    padding: 12px;
+    padding: 14px 10px;
     text-align: left;
-    color: #9fb3c8;
+    color: #8aa4c1;
     font-weight: 600;
-    border-bottom: 2px solid #1f2a33;
+    border-bottom: 1px solid #1f2a33;
     position: sticky;
     top: 0;
+    z-index: 2;
+}
+
+/* FILTERS INSIDE HEADER */
+.product-table th select,
+.product-table th input {
+    margin-top: 5px;
+    width: 100%;
+    padding: 5px;
+    background: #161b22;
+    border: 1px solid #2a3a45;
+    color: #e6edf3;
+    border-radius: 4px;
 }
 
 /* BODY */
 .product-table td {
-    padding: 12px;
+    padding: 14px 10px;
     border-bottom: 1px solid #1f2a33;
     color: #e6edf3;
 }
 
-/* ROW HOVER */
+/* ROW EFFECT */
 .product-table tbody tr:hover {
     background: #1a222c;
-    transition: 0.2s;
 }
 
-/* ZEBRA STRIPES */
+/* ZEBRA */
 .product-table tbody tr:nth-child(even) {
     background: #121a21;
 }
 
-/* CENTER ACTIONS */
+/* IMPORTANT COLUMN */
+.sim-number {
+    font-weight: bold;
+    color: #4fc3f7;
+    letter-spacing: 0.5px;
+}
+
+/* STATUS BADGE */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ACTIVE */
+.status-active {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4caf50;
+}
+
+/* INACTIVE */
+.status-inactive {
+    background: rgba(229, 57, 53, 0.15);
+    color: #e53935;
+}
+
+/* ACTION BUTTONS */
 .product-table td:last-child {
     text-align: center;
-}
-
-/* IMAGE */
-.img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background: #2a3a45;
-}
-
-/* BUTTONS */
-.btn-edit,
-.btn-delete {
-    padding: 6px 10px;
-    border-radius: 4px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 12px;
-    transition: 0.2s;
-}
-
-/* EDIT */
-.btn-edit {
-    background: #29b6f6;
-}
-
-.btn-edit:hover {
-    background: #0288d1;
-}
-
-/* DELETE */
-.btn-delete {
-    background: #e53935;
-}
-
-.btn-delete:hover {
-    background: #b71c1c;
-}
-
-/* HEADER BUTTON */
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-/* ADD BUTTON */
-.btn-add {
-    background: #1e88e5;
-    padding: 8px 14px;
-    border-radius: 5px;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-add:hover {
-    background: #1565c0;
-}
-
-/* IMAGE */
-.img {
-    width: 35px;
-    height: 35px;
-    background: #ccc;
-    border-radius: 50%;
-    margin: auto;
-}
-
-/* BUTTONS */
-.btn-edit {
-    background: #29b6f6;
-    border: none;
-    padding: 5px 8px;
-    color: #fff;
-    margin-right: 5px;
-    border-radius: 3px;
-}
-
-.btn-delete {
-    background: #e53935;
-    border: none;
-    padding: 5px 8px;
-    color: #fff;
-    border-radius: 3px;
+    white-space: nowrap;
 }
 /* SUBMENU */
 .menu li.has-submenu {
@@ -394,3 +342,4 @@ li.blur {
     display: flex;
     align-items: center;
 }
+

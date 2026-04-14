@@ -31,6 +31,8 @@ $routes->get('/users/edit_sim/(:num)', 'Users::edit_sim/$1');
 
 $routes->post('users/update_sim/(:num)', 'Users::update_sim/$1');
 
+$routes->get('users/login', 'Users::login');
+
 
 
 

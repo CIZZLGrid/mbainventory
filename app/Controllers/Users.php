@@ -8,6 +8,10 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class Users extends BaseController
 {
+    public function login()
+    {
+        return view('users/login');
+    }
     public function delete($id)
     {
         $model = new UserModel();

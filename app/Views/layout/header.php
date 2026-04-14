@@ -14,14 +14,17 @@
 
 <div class="topbar">
     <div class="top-left">
-        <div class="logo">INVENTORY SYSTEM</div>
+        <div class="logo">MBAC PH.</div>
+    </div>
+
+    <div class="top-middle">
+        <div class="gateway">GATEWAY SIM INVENTORY</div>
     </div>
 
     <div class="top-right">
         <span id="currentDateTime"></span>
         <div class="user">
-            <i class="fa fa-user-circle"></i> Harry Denn
-        </div>
+            <i class="fa fa-user-circle"></i> Admin</div>
     </div>
 </div>
 

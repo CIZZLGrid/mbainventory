@@ -1,28 +1,41 @@
-<?php include(APPPATH. 'VIEWS/layout/header.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+</head>
+<body>
 
-<div class="login-page">
-    <div class="login-box">
-        <div class="text-center">
-            <h1>Login Panel</h1>
-            <h4>Inventory Management System</h4>
+    <div class="wrapper">
+        <span class="bg-animate"></span>
+        <div class="form-box login">
+            <h2>Login</h2>
+            <form action="#">
+                <div class="input-box">
+                    <input type="text" required>
+                    <label>Username</label>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" required>
+                    <label>Password</label>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <button type= "submit" class="btn">Login</button>
+                <div class="logreg-link">
+                    <p>Don't have an account? <a href="#"
+                     class="register-link">Sign up</a></p>
+                </div>
+            </form>
         </div>
-
-        <form method="post" action="<?= base_url('users/login') ?>" class="clearfix">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" class="form-control" name="username" placeholder="Username">
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Password">
-            </div>
-
-            <div class="form-group">
-                <button type="submit" class="btn-login">Login</button>
-            </div>
-        </form>
+        <div class="info-text login">
+            <h2>Welcome Back!</h2>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+        </div>
     </div>
-</div>
-
-<?php include(APPPATH. 'VIEWS/layout/footer.php'); ?>
+    
+</body>
+</html>
