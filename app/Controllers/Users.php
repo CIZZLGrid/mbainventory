@@ -8,10 +8,6 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class Users extends BaseController
 {
-    public function login()
-    {
-        return view('users/login');
-    }
     public function delete($id)
     {
         $model = new UserModel();
@@ -20,7 +16,6 @@ class Users extends BaseController
 
         return redirect()->to('/users/product');
     }
-
     public function product()
     {
         $model = new Usermodel();
@@ -102,4 +97,14 @@ class Users extends BaseController
          return redirect()->to('/users/product');
 
     }
+
+    public function gateway_visual()
+    {
+        $model = new UserModel();
+
+        $data['sims'] = $model->findall();
+
+        return view('users/gateway_visual', $data);
+    }
 }
+

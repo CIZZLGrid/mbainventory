@@ -20,7 +20,7 @@
                 </ul>
             </li>
 
-            <li class="blur"><i class="fa fa-image"></i> Media Files</li>
+            <li><a class="manage" href="<?= base_url('/users/gateway_visual') ?>"><i class="fa fa-image"></i> Gateway Layout </a></li>
         </ul>
     </div>
     <script>

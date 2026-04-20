@@ -24,7 +24,13 @@
     <div class="top-right">
         <span id="currentDateTime"></span>
         <div class="user">
-            <i class="fa fa-user-circle"></i> Admin</div>
+            <i class="fa fa-user-circle"></i> <?= session()->get('username')?>
+            <?php if(session()->get('isLoggedIn')): ?>
+                <a href="<?= base_url('auth/logout') ?>" style="margin-left: 15px; color: #fff; text-decoration: none;">
+                    <i class="fa fa-sign-out"></i> Logout
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 

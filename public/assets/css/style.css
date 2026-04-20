@@ -67,7 +67,7 @@ body {
 }
 
 .logo {
-    background: rgb(0, 238, 255);
+    background: linear-gradient(90deg, #8461f4, #81d8e5);
     padding: 12px 20px;
     font-weight: bold;
     color: #fff;
@@ -78,11 +78,15 @@ body {
     display: flex;
     align-items: center;
     border-radius: 20px;
-    background: rgb(0, 238, 255);
     padding: 12px 20px;
     font-weight: bold;
     font-style: oblique;
-    color: #fff;
+    font-size: 30px;
+    color: linear-gradient(90deg, #8461f4, #81d8e5);
+}
+
+.top-middle .gateway {
+    background: linear-gradient(90deg, #8461f4, #81d8e5);
 }
 
 .top-right {
@@ -342,4 +346,67 @@ li.blur {
     display: flex;
     align-items: center;
 }
+
+.main-content {
+    margin-left: 240px; /* sidebar width */
+    margin-top: 90px;   /* topbar height */
+    padding: 20px;
+}
+
+.gateway-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.gateway-card {
+    background: #161b22;
+    border: 1px solid #1f2a33;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.gateway-header {
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.sim-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 6px;
+}
+
+.sim-slot {
+    background: #0d1117;
+    border: 1px solid #2a2f36;
+    border-radius: 6px;
+    text-align: center;
+    padding: 6px;
+    font-size: 11px;
+}
+
+.sim-slot.active {
+    background: rgba(0,255,150,0.15);
+    color: #00ff95;
+}
+
+.sim-slot.inactive {
+    background: rgba(255,0,0,0.15);
+    color: #ff4d4d;
+}
+
+.slot-number {
+    font-weight: bold;
+}
+
+.sim-text {
+    font-size: 10px;
+}
+
+
+
+
 
