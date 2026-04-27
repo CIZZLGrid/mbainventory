@@ -39,6 +39,8 @@ $routes->post('auth/authenticate', 'Auth::authenticate');
 
 $routes->get('auth/logout', 'Auth::logout');
 
+$routes->get('/users/export', 'Users::export', ['filter' => 'authfilter']);
+
 
 
 

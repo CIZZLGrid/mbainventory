@@ -67,11 +67,9 @@ body {
 }
 
 .logo {
-    background: linear-gradient(90deg, #8461f4, #81d8e5);
     padding: 12px 20px;
     font-weight: bold;
     color: #fff;
-    border-radius: 20px;
 }
 
 .top-middle {
@@ -82,12 +80,8 @@ body {
     font-weight: bold;
     font-style: oblique;
     font-size: 30px;
-    color: linear-gradient(90deg, #8461f4, #81d8e5);
 }
 
-.top-middle .gateway {
-    background: linear-gradient(90deg, #8461f4, #81d8e5);
-}
 
 .top-right {
     display: flex;
@@ -173,12 +167,70 @@ li.blur {
 }
 
 .search-container {
-    margin-bottom: 15px;
     display: flex;
     justify-content: flex-start;
-    font: bold;
-    height: 40px;
-    border-radius: 30px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    padding: 8px 12px;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    width: 280px;
+}
+
+.search-box:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.search-box:focus-within {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74,144,226,0.2);
+    transform: scale(1.02);
+}
+
+.search-box .icon {
+    font-size: 16px;
+    color: #888;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    background: transparent;
+}
+
+.search-box input::placeholder {
+    color: #aaa;
+}
+
+
+.export-button {
+   display: flex;
+   justify-content: flex-end;
+   text-decoration: none;;
+
+}
+
+.btn-export {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-export:hover {
+    background-color: #218838;
+    color: white;
 }
 
 /* HEADER */
@@ -208,6 +260,7 @@ li.blur {
     color: #e6edf3;
     border-radius: 4px;
 }
+
 
 /* BODY */
 .product-table td {
@@ -341,6 +394,23 @@ li.blur {
     cursor: pointer;
 }
 
+.btn-delete {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: red;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.btn-edit {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #1e88e5;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
 /* CENTER BUTTON */
 .form-group.full {
     display: flex;
@@ -354,7 +424,7 @@ li.blur {
 }
 
 .gateway-container {
-    display: grid;
+    display: grid;  
     grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
     gap: 15px;
     padding: 20px;

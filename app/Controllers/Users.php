@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Users extends BaseController
 {
@@ -97,7 +99,6 @@ class Users extends BaseController
          return redirect()->to('/users/product');
 
     }
-
     public function gateway_visual()
     {
         $model = new UserModel();
@@ -105,6 +106,82 @@ class Users extends BaseController
         $data['sims'] = $model->findall();
 
         return view('users/gateway_visual', $data);
+    }
+    public function export()
+    {
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Sim Gateway');
+        $sheet->setCellValue('B1', 'Sim ID');
+        $sheet->setCellValue('C1', 'Sim No');
+        $sheet->setCellValue('D1', 'Operator');
+        $sheet->setCellValue('E1', 'Gateway');
+        $sheet->setCellValue('F1', 'IP Address');
+        $sheet->setCellValue('G1', 'Plan');
+        $sheet->setCellValue('H1', 'Call To');
+        $sheet->setCellValue('I1', 'SMS To');
+        $sheet->setCellValue('J1', 'Date');
+
+        $model = new UserModel();
+        $data = $model->findall();
+
+        $row = 2;
+
+        $breakpoints = [2, 35, 68, 101, 134, 167, 200, 233, 266, 299, 332, 365, 398, 431, 464, 497, 530, 563, 596, 629, 662, 695, 728, 761, 794, 827, 860, 893, 926, 959];
+
+        $gatewayIndex = 1;
+
+        foreach (range('A', 'J') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        foreach ($data as $sim)
+        {
+        
+            if (in_array($row, $breakpoints))
+            {
+                $sheet->setCellValue('A' . $row, 'Gateway ' . $gatewayIndex);
+                $sheet->mergeCells("A{$row}:J{$row}");
+                $sheet->getStyle("A{$row}:J{$row}")
+                    ->getFont()
+                    ->setBold(true)
+                    ->setSize(16);
+
+                $sheet->getStyle("A{$row}:J{$row}")
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $row++;
+                $gatewayIndex++;
+            }
+
+            // Data rows
+            $sheet->setCellValue('A' . $row, $sim['sim_gateway']);
+            $sheet->setCellValue('B'. $row, $sim['sim_id']);
+            $sheet->setCellValue('C'. $row, $sim['sim_no']);
+            $sheet->setCellValue('D'. $row, $sim['operator']);
+            $sheet->setCellValue('E'. $row, $sim['gateway']);
+            $sheet->setCellValue('F'. $row, $sim['ip_address']);
+            $sheet->setCellValue('G'. $row, $sim['plan']);
+            $sheet->setCellValue('H'. $row, $sim['call_to']);
+            $sheet->setCellValue('I'. $row, $sim['sms_to']);
+            $sheet->setCellValue('J'. $row, $sim['date']);
+
+            $row++;
+}
+
+        $filename = 'Sim_Card_Inventory.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $filename . '.xlsx"');   
+
+        header('Cache-Control: max-age=0');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+        exit;
+
     }
 }
 

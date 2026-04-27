@@ -10,7 +10,15 @@
         <div class="card-header">
             <form method="GET" action="">
                 <div class="search-container">
-                    <input type="text" name="search" id="searchInput" placeholder="Search for Sim Card Number" />
+                    <div class="search-box">
+                        <span class="icon">🔍</span>
+                        <input type="text" name="search" id="searchInput" placeholder="Search for Sim Card Number" />
+                    </div>
+                </div>
+                <div class="export-button">
+                    <a href="<?= base_url('/users/export') ?>" class="btn-export">
+                     Export to Excel
+                    </a>
                 </div>
             </form>  
         </div>
@@ -47,6 +55,11 @@
                                 <option value="7">7</option>
                                 <option value="8">8</option>
                                 <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
                             </select>
                         </th>
 
@@ -63,6 +76,11 @@
                                 <option value="10.23.144.51">10.23.144.51</option>
                                 <option value="10.23.144.52">10.23.144.52</option>
                                 <option value="10.23.144.53">10.23.144.53</option>
+                                <option value="10.23.144.54">10.23.144.54</option>
+                                <option value="10.23.144.55">10.23.144.55</option>
+                                <option value="10.23.144.56">10.23.144.56</option>
+                                <option value="10.23.144.57">10.23.144.57</option>
+                                <option value="10.23.144.58">10.23.144.58</option>
                             </select>
                         </th>
 

@@ -26,7 +26,7 @@ foreach ($sims as $sim) {
         <div class="gateway-card">
 
             <div class="gateway-header">
-                Gateway <?= $gw ?>
+                Gateway <?= $gw ?> 
             </div>
 
             <div class="sim-grid">
