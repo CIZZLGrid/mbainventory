@@ -1,11 +1,11 @@
 <body>
     <div class="sidebar">
         <ul class="menu">
-            <li class="blur"><i class="fa fa-home"></i> Dashboard</li>
+            <li><a class="manage" href="<?= base_url('/users/dashboard') ?>"><i class="fa fa-home"></i> Dashboard</li>
 
-            <li class="blur">
+            <li><a class="manage" href="<?= base_url('/users/admin_management') ?>">
                 <i class="fa fa-user"></i> User Management
-            </li>
+            </li>   
 
             <li class="menu-title">Sim Card Management</li>
 

@@ -5,8 +5,7 @@
     <div class="main">
 
     <div class="card">
-
-        <!-- HEADER -->
+  <!-- HEADER -->
         <div class="card-header">
             <form method="GET" action="">
                 <div class="search-container">
@@ -44,7 +43,7 @@
 
                         <th>
                             Gateway<br>
-                            <select id="gatewayFilter">
+                            <select id="gatewayFilter" >
                                 <option value="all">ALL</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -150,6 +149,7 @@
 </div>
 
     <script>
+
 
    function applyFilters() {
     let operatorSelected = document.getElementById("operatorFilter").value.toLowerCase();

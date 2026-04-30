@@ -22,7 +22,14 @@ class Users extends BaseController
     {
         $model = new Usermodel();
 
-        $data['sims'] = $model->findall();
+        $sims = $model
+                ->orderBy('gateway', 'ASC')
+                ->orderBy('sim_gateway', 'ASC')
+                ->findAll();
+
+        $data = [
+            'sims' => $sims
+        ];
 
 
         return view('users/product', $data);
@@ -103,7 +110,10 @@ class Users extends BaseController
     {
         $model = new UserModel();
 
-        $data['sims'] = $model->findall();
+        $data['sims'] = $model->
+            orderBy('gateway', 'ASC')
+            ->orderBy('sim_gateway', 'ASC')
+            ->findAll();
 
         return view('users/gateway_visual', $data);
     }
@@ -144,14 +154,9 @@ class Users extends BaseController
             {
                 $sheet->setCellValue('A' . $row, 'Gateway ' . $gatewayIndex);
                 $sheet->mergeCells("A{$row}:J{$row}");
-                $sheet->getStyle("A{$row}:J{$row}")
-                    ->getFont()
-                    ->setBold(true)
-                    ->setSize(16);
+                $sheet->getStyle("A{$row}:J{$row}")->getFont()->setBold(true)->setSize(16);
 
-                $sheet->getStyle("A{$row}:J{$row}")
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $sheet->getStyle("A{$row}:J{$row}")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $row++;
                 $gatewayIndex++;
             }
@@ -169,19 +174,51 @@ class Users extends BaseController
             $sheet->setCellValue('J'. $row, $sim['date']);
 
             $row++;
-}
+        }
 
-        $filename = 'Sim_Card_Inventory.xlsx';
+                $filename = 'Sim_Card_Inventory.xlsx';
 
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . $filename . '.xlsx"');   
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment; filename="' . $filename . '.xlsx"');   
 
-        header('Cache-Control: max-age=0');
+                header('Cache-Control: max-age=0');
 
-        $writer = new Xlsx($spreadsheet);
-        $writer->save('php://output');
-        exit;
+                $writer = new Xlsx($spreadsheet);
+                $writer->save('php://output');
+                exit;
 
     }
+    public function dashboard()
+    {
+        $model = new Usermodel();
+
+        $active = $model->where('plan', 'ACTIVE')->countAllResults(false);
+
+        $model = new Usermodel();
+
+        $empty = $model->where('plan', 'EMPTY')->countAllResults(false);
+
+        $model = new Usermodel();
+
+
+
+        $inactive = $model->where('plan', 'INACTIVE')->countAllResults(false);
+        $total = $model->countAll();
+
+        $data = [
+            'active' => $active,
+            'inactive' => $inactive,
+            'empty' => $empty,
+            'total' => $total
+        ];
+
+ 
+        return view('users/dashboard', $data);
+    }
+    public function admin_management()
+    {
+        return view('users/admin_management');
+    }
+
 }
 

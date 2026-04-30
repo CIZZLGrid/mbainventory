@@ -32,7 +32,6 @@ $routes->post('users/update_sim/(:num)', 'Users::update_sim/$1', ['filter' => 'a
 
 $routes->get('/users/gateway_visual', 'Users::gateway_visual', ['filter' => 'authfilter']);
 
-
 $routes->get('auth/login', 'Auth::login', ['filter' => 'guest']);
 
 $routes->post('auth/authenticate', 'Auth::authenticate');
@@ -40,6 +39,14 @@ $routes->post('auth/authenticate', 'Auth::authenticate');
 $routes->get('auth/logout', 'Auth::logout');
 
 $routes->get('/users/export', 'Users::export', ['filter' => 'authfilter']);
+
+$routes->get('/users/dashboard', 'Users::dashboard', ['filter' => 'authfilter']);
+
+$routes->get('/users/admin_management', 'Users::admin_management', ['filter' => 'authfilter']);
+
+
+
+
 
 
 
