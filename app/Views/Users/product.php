@@ -59,6 +59,8 @@
                                 <option value="12">12</option>
                                 <option value="13">13</option>
                                 <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
                             </select>
                         </th>
 
@@ -80,6 +82,8 @@
                                 <option value="10.23.144.56">10.23.144.56</option>
                                 <option value="10.23.144.57">10.23.144.57</option>
                                 <option value="10.23.144.58">10.23.144.58</option>
+                                <option value="10.23.144.59">10.23.144.59</option>
+                                <option value="10.23.144.60">10.23.144.60</option>
                             </select>
                         </th>
 

@@ -117,6 +117,8 @@ class Users extends BaseController
 
         return view('users/gateway_visual', $data);
     }
+
+
     public function export()
     {
 
@@ -141,7 +143,8 @@ class Users extends BaseController
 
         $breakpoints = [2, 35, 68, 101, 134, 167, 200, 233, 266, 299, 332, 365, 398, 431, 464, 497, 530, 563, 596, 629, 662, 695, 728, 761, 794, 827, 860, 893, 926, 959];
 
-        $gatewayIndex = 1;
+
+        $gatewayIndex = $data[0]['gateway'];
 
         foreach (range('A', 'J') as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);
