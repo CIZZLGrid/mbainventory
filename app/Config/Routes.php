@@ -6,6 +6,12 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
+$routes->get('make-hash', function () {
+    echo password_hash('admin123', PASSWORD_DEFAULT);
+});
+
+$routes->get('/', 'Auth::login');
+
 $routes->get('/users/product', 'Users::product', ['filter' => 'authfilter']);
 
 $routes->get('/users/create', 'Users::create', ['filter' => 'authfilter']);
@@ -30,6 +36,8 @@ $routes->get('/users/edit_sim/(:num)', 'Users::edit_sim/$1', ['filter' => 'authf
 
 $routes->post('users/update_sim/(:num)', 'Users::update_sim/$1', ['filter' => 'authfilter']);
 
+$routes->post('/users/deleteSelected', 'Users::deleteSelected');
+
 $routes->get('/users/gateway_visual', 'Users::gateway_visual', ['filter' => 'authfilter']);
 
 $routes->get('auth/login', 'Auth::login', ['filter' => 'guest']);
@@ -41,6 +49,8 @@ $routes->get('auth/logout', 'Auth::logout');
 $routes->get('/users/export', 'Users::export', ['filter' => 'authfilter']);
 
 $routes->get('/users/dashboard', 'Users::dashboard', ['filter' => 'authfilter']);
+
+$routes->post('/users/upload-excel', 'Users::uploadExcel', ['filter' => 'authfilter']);
 
 $routes->get('/users/admin_management', 'Users::admin_management', ['filter' => 'authfilter']);
 

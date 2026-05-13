@@ -7,6 +7,7 @@ use App\Models\UserModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Users extends BaseController
 {
@@ -59,7 +60,7 @@ class Users extends BaseController
 
         ]);
 
-        return redirect()->to('/users/product');    
+        return redirect()->back()->with('success', 'Globe SIM added successfully.'); 
     }
     public function add_smart()
     {
@@ -78,7 +79,7 @@ class Users extends BaseController
             
         ]);
 
-        return redirect()->to('/users/product');    
+        return redirect()->back()->with('success', 'Smart SIM added successfully.');    
     }
     public function edit_sim($id)
     {
@@ -106,6 +107,22 @@ class Users extends BaseController
          return redirect()->to('/users/product');
 
     }
+    public function deleteSelected()
+    {
+        $selectedIds = $this->request->getPost('selected_ids');
+
+        if (!$selectedIds) {
+            return redirect()->back()->with('error', 'No rows selected.');
+        }
+
+        $selectedIds = array_map('intval', $selectedIds);
+
+        $model = new SimModel();
+
+        $model->whereIn('id', $selectedIds)->delete();
+
+        return redirect()->back()->with('success', 'Selected rows deleted successfully.');
+    }
     public function gateway_visual()
     {
         $model = new UserModel();
@@ -117,8 +134,6 @@ class Users extends BaseController
 
         return view('users/gateway_visual', $data);
     }
-
-
     public function export()
     {
 
@@ -142,7 +157,6 @@ class Users extends BaseController
         $row = 2;
 
         $breakpoints = [2, 35, 68, 101, 134, 167, 200, 233, 266, 299, 332, 365, 398, 431, 464, 497, 530, 563, 596, 629, 662, 695, 728, 761, 794, 827, 860, 893, 926, 959];
-
 
         $gatewayIndex = $data[0]['gateway'];
 
@@ -193,31 +207,138 @@ class Users extends BaseController
     }
     public function dashboard()
     {
-        $model = new Usermodel();
-
-        $active = $model->where('plan', 'ACTIVE')->countAllResults(false);
-
-        $model = new Usermodel();
-
-        $empty = $model->where('plan', 'EMPTY')->countAllResults(false);
-
-        $model = new Usermodel();
-
-
-
-        $inactive = $model->where('plan', 'INACTIVE')->countAllResults(false);
-        $total = $model->countAll();
+        $filePath = $this->getLatestInventoryFile();
 
         $data = [
-            'active' => $active,
-            'inactive' => $inactive,
-            'empty' => $empty,
-            'total' => $total
+            'active' => 0,
+            'inactive' => 0,
+            'total' => 0,
         ];
 
- 
+        if ($filePath !== null) {
+            $data = $this->scanExcelFile($filePath);
+        }
+
         return view('users/dashboard', $data);
     }
+
+    private function getLatestInventoryFile()
+    {
+        $uploadPath = WRITEPATH . 'uploads/';
+
+        $files = [
+            $uploadPath . 'latest_inventory.csv',
+            $uploadPath . 'latest_inventory.xlsx',
+            $uploadPath . 'latest_inventory.xls',
+        ];
+
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                return $file;
+            }
+        }
+
+        return null;
+    }
+
+    public function scanExcelFile($filePath)
+    {
+        $spreadsheet = IOFactory::load($filePath);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $rows = $sheet->toArray(null, true, true, true);
+
+        $active = 0;
+        $inactive = 0;
+
+        if (empty($rows)) {
+            return [
+                'active' => 0,
+                'inactive' => 0,
+                'total' => 0,
+            ];
+        }
+
+        // First row: GATEWAY, SIM0, SIM1, SIM2...
+        $header = $rows[1];
+
+        $simcolumns = [];
+
+        foreach ($header as $columnLetter => $columnName) {
+            $colName = strtoupper(trim((string) $columnName));
+
+            if (preg_match('/^SIM\s*\d+$/', $colName)) {
+                $simcolumns[] = $columnLetter;
+            }
+        }
+
+        for ($i = 2; $i <= count($rows); $i++) {
+            $row = $rows[$i];
+
+            $gateway = trim((string) ($row['A'] ?? ''));
+
+            if ($gateway === '') {
+                continue;
+            }
+
+            foreach ($simcolumns as $columnLetter) {
+                $value = strtoupper(trim((string) ($row[$columnLetter] ?? '')));
+
+                if ($value === 'GOOD' || $value === 'LOW') {
+                    $active++;
+                } else {
+                    $inactive++;
+                }
+            }
+        }
+
+        return [
+            'active' => $active,
+            'inactive' => $inactive,
+            'total' => $active + $inactive,
+        ];
+    }
+
+    public function uploadExcel()
+    {
+        $file = $this->request->getFile('excel_file');
+
+        if (!$file || !$file->isValid()) {
+            return redirect()->back()->with('error', 'Invalid file.');
+        }
+
+        $extension = strtolower($file->getClientExtension());
+
+        $allowedExtensions = ['xlsx', 'xls', 'csv'];
+
+        if (!in_array($extension, $allowedExtensions)) {
+            return redirect()->back()->with('error', 'Only XLSX, XLS, or CSV files are allowed.');
+        }
+
+        $uploadPath = WRITEPATH . 'uploads/';
+
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
+        // Delete old daily inventory file
+        foreach (['xlsx', 'xls', 'csv'] as $oldExtension) {
+            $oldFile = $uploadPath . 'latest_inventory.' . $oldExtension;
+
+            if (file_exists($oldFile)) {
+                unlink($oldFile);
+            }
+        }
+
+        // Save using the real file extension
+        $newFileName = 'latest_inventory.' . $extension;
+
+        $file->move($uploadPath, $newFileName);
+
+        return redirect()->to(base_url('users/dashboard'))
+            ->with('success', 'Inventory file uploaded successfully.');
+    }
+
     public function admin_management()
     {
         return view('users/admin_management');

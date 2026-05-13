@@ -2,7 +2,7 @@
 <?php include(APPPATH.'Views/layout/sidebar.php'); ?>
 
 <div class="main">
-    <div class="card">
+    <div class="sim-form-card">
         <h3>ADD SMART SIM CARD</h3>
 
         <div class="card-body">
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Plan</label>
+                    <label>Status</label>
                     <input type="text" name="plan" class="form-control">
                 </div>
 

@@ -1,33 +1,77 @@
 <?php include(APPPATH.'Views/layout/header.php'); ?>
 <?php include(APPPATH.'Views/layout/sidebar.php'); ?>
 
+<?php
+    $request = service('request');
+    $queryString = $request->getServer('QUERY_STRING');
+
+    $returnUrl = current_url();
+
+    if (!empty($queryString)) {
+        $returnUrl .= '?' . $queryString;
+    }
+?>
+
 <body>
     <div class="main">
 
-    <div class="card">
+    <div class="inventory-card">
   <!-- HEADER -->
-        <div class="card-header">
-            <form method="GET" action="">
-                <div class="search-container">
-                    <div class="search-box">
-                        <span class="icon">🔍</span>
-                        <input type="text" name="search" id="searchInput" placeholder="Search for Sim Card Number" />
-                    </div>
+        <div class="inventory-header">
+
+            <div class="inventory-title">
+                <h2>SIM Card Inventory</h2>
+                <p>Manage SIM numbers, gateways, IP addresses, and active plans.</p>
+            </div>
+
+            <div class="inventory-actions">
+                <a href="<?= base_url('/users/export') ?>" class="btn-action btn-export">
+                    <i class="fa fa-file-excel"></i>
+                    Export Excel
+                </a>
+
+                <button 
+                    type="submit" 
+                    form="bulkForm" 
+                    class="btn-action btn-delete-selected"
+                    onclick="return confirm('Delete selected rows?')"
+                >
+                    <i class="fa fa-trash"></i>
+                    Delete Selected
+                </button>
+            </div>
+
+        </div>
+
+        <div class="inventory-toolbar">
+            <form method="GET" action="" class="search-form">
+                <div class="search-box">
+                    <i class="fa fa-search"></i>
+                    <input 
+                        type="text" 
+                        name="search" 
+                        id="searchInput" 
+                        placeholder="Search SIM card number..."
+                    />
                 </div>
-                <div class="export-button">
-                    <a href="<?= base_url('/users/export') ?>" class="btn-export">
-                     Export to Excel
-                    </a>
-                </div>
-            </form>  
+            </form>
+
+            <span class="toolbar-hint">
+                Use the column filters to narrow the table results.
+            </span>
         </div>
 
         <!-- TABLE WRAPPER (NEW) -->
         <div class="table-wrapper">
+            <form id="bulkForm" method="POST" action="<?= base_url('users/deleteSelected') ?>">
+            <?= csrf_field() ?>
 
             <table class="product-table">
                 <thead>
                     <tr>
+                        <th>
+                            <input type="checkbox" id="selectAll">
+                        </th>
                         <th>Slot</th>
                         <th>SIM ID</th>
                         <th>Mobile Number</th>
@@ -61,6 +105,15 @@
                                 <option value="14">14</option>
                                 <option value="15">15</option>
                                 <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
                             </select>
                         </th>
 
@@ -84,6 +137,16 @@
                                 <option value="10.23.144.58">10.23.144.58</option>
                                 <option value="10.23.144.59">10.23.144.59</option>
                                 <option value="10.23.144.60">10.23.144.60</option>
+                                <option value="10.23.144.70">10.23.144.70</option>
+                                <option value="10.23.144.71">10.23.144.71</option>
+                                <option value="10.23.144.72">10.23.144.72</option>
+                                <option value="10.23.144.73">10.23.144.73</option>
+                                <option value="10.23.144.74">10.23.144.74</option>
+                                <option value="10.23.144.75">10.23.144.75</option>
+                                <option value="10.23.144.76">10.23.144.76</option>
+                                <option value="10.23.144.77">10.23.144.77</option>
+                                <option value="10.23.144.78">10.23.144.78</option>
+
                             </select>
                         </th>
 
@@ -112,6 +175,14 @@
 
                     <?php foreach($sims as $sim): ?>
                     <tr>
+                        <td>
+                            <input 
+                                type="checkbox" 
+                                name="selected_ids[]" 
+                                value="<?= $sim['id'] ?>" 
+                                class="rowCheckbox"
+                            >
+                        </td>
                         <td><?= $sim['sim_gateway'] ?></td>
                         <td><?= $sim['sim_id'] ?></td>
 
@@ -147,15 +218,29 @@
 
                 </tbody>
             </table>
-
+            </form>
         </div>
     </div>
 </div>
 
     <script>
+function updateSelectAllState() {
+    let selectAll = document.getElementById("selectAll");
 
+    let visibleCheckboxes = Array.from(document.querySelectorAll("#tableBody tr"))
+        .filter(row => row.style.display !== "none")
+        .map(row => row.querySelector(".rowCheckbox"))
+        .filter(checkbox => checkbox !== null);
 
-   function applyFilters() {
+    if (visibleCheckboxes.length === 0) {
+        selectAll.checked = false;
+        return;
+    }
+
+    selectAll.checked = visibleCheckboxes.every(checkbox => checkbox.checked);
+}
+
+function applyFilters() {
     let operatorSelected = document.getElementById("operatorFilter").value.toLowerCase();
     let gatewaySelected = document.getElementById("gatewayFilter").value.toLowerCase();
     let ipSelected = document.getElementById("ipFilter").value.toLowerCase();
@@ -184,20 +269,42 @@
             row.style.display = "";
         } else {
             row.style.display = "none";
+
+            let checkbox = row.querySelector(".rowCheckbox");
+            if (checkbox) {
+                checkbox.checked = false;
+            }
         }
     });
+
+    updateSelectAllState();
 }
+
+document.getElementById("selectAll").addEventListener("change", function () {
+    let rows = document.querySelectorAll("#tableBody tr");
+
+    rows.forEach(function(row) {
+        if (row.style.display !== "none") {
+            let checkbox = row.querySelector(".rowCheckbox");
+
+            if (checkbox) {
+                checkbox.checked = document.getElementById("selectAll").checked;
+            }
+        }
+    });
+});
+
+document.querySelectorAll(".rowCheckbox").forEach(function(checkbox) {
+    checkbox.addEventListener("change", updateSelectAllState);
+});
 
 document.getElementById("operatorFilter").addEventListener("change", applyFilters);
 document.getElementById("gatewayFilter").addEventListener("change", applyFilters);
 document.getElementById("ipFilter").addEventListener("change", applyFilters);
 document.getElementById("statusFilter").addEventListener("change", applyFilters);
-
 document.getElementById("searchInput").addEventListener("keyup", applyFilters);
-
 document.getElementById("dateFilter").addEventListener("change", applyFilters);
-
-    </script>
+</script>
 </body>
 
 

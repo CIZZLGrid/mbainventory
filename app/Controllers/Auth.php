@@ -22,6 +22,8 @@ class Auth extends BaseController
 
         $admin = $model->where('username', $username)->first();
 
+        echo password_hash('admin123', PASSWORD_DEFAULT);
+
         if ($admin)
             {
                 if(password_verify($password, $admin['password']))
@@ -33,7 +35,7 @@ class Auth extends BaseController
                     'isLoggedIn' => true
                 ]);
 
-                return redirect()->to('/users/product');
+                return redirect()->to(site_url('users/product'));
                     }else
                     {
                     return redirect()->back()->with('error', 'Invalid Password');

@@ -4,39 +4,39 @@
 
 <body>
     <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold  text-uppercase mb-1">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold  text-uppercase mb-1">
                                                 Active Simcards</div>
-                                            <div class="h5 mb-0 font-weight-bold text-white-800"><?= $active ?> </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-sim-card fa-2x" style="color:#1cc88a;"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-white-800"><?= $active ?> </div>
                             </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-sim-card fa-2x" style="color:#1cc88a;"></i>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold e text-uppercase mb-1">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold e text-uppercase mb-1">
                                                 Inactive Simcards</div>
-                                            <div class="h5 mb-0 font-weight-bold text-white-800"><?= $inactive ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-sim-card fa-2x" style="color:#ff0000;"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="h5 mb-0 font-weight-bold text-white-800"><?= $inactive ?></div>
                             </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-sim-card fa-2x" style="color:#ff0000;"></i>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
                  
         <div class="col-xl-3 col-md-6 mb-4">
@@ -62,24 +62,6 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold  text-uppercase mb-1">
-                                              Empty Sim Slots</div>
-                                            <div class="h5 mb-0 font-weight-bold text-white-800"> <?= $empty ?> </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-sim-card fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
 <div class="row chart-row">
     <div class="col-xl-8 col-lg-10 chart-center">
         <div class="card shadow mb-4 chart-card">
@@ -92,7 +74,15 @@
         </div>
     </div>
 </div>
-                      
+
+<form action="<?= base_url('users/upload-excel') ?>" method="post" enctype="multipart/form-data">
+    <?= csrf_field() ?>
+
+    <input type="file" name="excel_file" accept=".xlsx,.xls,.csv" required>
+
+    <button type="submit">Upload Daily Excel</button>
+</form>
+
         
      </div>
 
@@ -104,17 +94,16 @@ const ctx = document.getElementById('simPieChart').getContext('2d');
 new Chart(ctx, {
     type: 'pie',
     data: {
-        labels: ['Active', 'Inactive', 'Empty Slots'],
+        labels: ['Active', 'Inactive'],
         datasets: [{
             data: [
                 <?= $active ?>,
                 <?= $inactive ?>,
-                <?= $empty ?>
             ],
             backgroundColor: [
                 '#1cc88a',   // green
                 '#ff0000',   // red
-                '#ffff'    // yellow
+
             ],
             borderWidth: 2
         }]
@@ -131,14 +120,6 @@ new Chart(ctx, {
 </script>
 
 </body>
-
-
-
-
-
-
-
-
 
 
 <?php include(APPPATH.'Views/layout/footer.php'); ?>
