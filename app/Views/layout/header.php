@@ -9,8 +9,12 @@
 <!-- Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <link rel="icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+    <link rel="manifest" href="<?= base_url('manifest.json') ?>">
+
 </head>
 <body>
+
 
 <div class="topbar">
     <div class="top-left">
