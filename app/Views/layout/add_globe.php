@@ -10,7 +10,7 @@
 
                 <div class="form-group">
                     <label>Sim Card Slot on Gateway</label>
-                    <input type="text" name="sim_gateway" class="form-control">
+                    <input type="number" name="sim_gateway" class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -40,7 +40,7 @@
 
                 <div class="form-group">
                     <label>Gateway</label>
-                    <input type="text" name="gateway" class="form-control">
+                    <input type="number" name="gateway" class="form-control">
                 </div>
 
                 <div class="form-group">

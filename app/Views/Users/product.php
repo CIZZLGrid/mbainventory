@@ -16,7 +16,7 @@
     <div class="main">
 
     <div class="inventory-card">
-  <!-- HEADER -->
+    <!-- HEADER -->
         <div class="inventory-header">
 
             <div class="inventory-title">
@@ -48,7 +48,7 @@
                 <div class="search-box">
                     <i class="fa fa-search"></i>
                     <input 
-                        type="text" 
+                        type="number" 
                         name="search" 
                         id="searchInput" 
                         placeholder="Search SIM card number..."
@@ -136,6 +136,8 @@
                                 <option value="10.23.144.57">10.23.144.57</option>
                                 <option value="10.23.144.58">10.23.144.58</option>
                                 <option value="10.23.144.59">10.23.144.59</option>
+                                <option value="10.23.144.68">10.23.144.68</option>
+                                <option value="10.23.144.69">10.23.144.69</option>
                                 <option value="10.23.144.60">10.23.144.60</option>
                                 <option value="10.23.144.70">10.23.144.70</option>
                                 <option value="10.23.144.71">10.23.144.71</option>
