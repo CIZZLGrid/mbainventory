@@ -35,11 +35,11 @@ class Auth extends BaseController
                     'isLoggedIn' => true
                 ]);
 
-                return redirect()->to(site_url('users/product'));
+                return redirect()->to(site_url('users/dashboard'));
                     }else
                     {
                     return redirect()->back()->with('error', 'Invalid Password');
-                    
+                        
                     }
             }
             else{

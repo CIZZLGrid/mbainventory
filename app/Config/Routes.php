@@ -52,6 +52,8 @@ $routes->get('/users/dashboard', 'Users::dashboard', ['filter' => 'authfilter'])
 
 $routes->post('/users/upload-excel', 'Users::uploadExcel', ['filter' => 'authfilter']);
 
+$routes->get('/users/inactive-list', 'Users::inactiveList', ['filter' => 'authfilter']);
+
 $routes->get('/users/admin_management', 'Users::admin_management', ['filter' => 'authfilter']);
 
 

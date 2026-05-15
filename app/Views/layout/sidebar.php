@@ -13,14 +13,14 @@
 
             <!-- Parent menu with submenu -->
             <li class="has-submenu active">
-               Add Sim Card
+                <a class="manage" href="#"><i class="fa fa-plus"></i> Add Sim Card</a>
                 <ul class="submenu">
                     <li> <a class="manage" href="<?= base_url('/users/globe_sim') ?>">Add Globe Sim Cards</a></li>
                     <li><a class="manage" href="<?= base_url('/users/smart_sim') ?>">Add Smart Sim Cards</a></li>
                 </ul>
             </li>
 
-            <li><a class="manage" href="<?= base_url('/users/gateway_visual') ?>"><i class="fa fa-image"></i> Gateway Layout </a></li>
+            <li><a class="manage" href="<?= base_url('/users/gateway_visual') ?>"><i class="fa fa-image"></i> Gateway Monitor </a></li>
         </ul>
     </div>
     <script>

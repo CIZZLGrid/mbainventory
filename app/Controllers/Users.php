@@ -8,6 +8,8 @@ use CodeIgniter\HTTP\ResponseInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use App\Models\InactiveSimModel;
+use App\Models\GatewayIpMapModel;
 
 class Users extends BaseController
 {
@@ -298,6 +300,127 @@ class Users extends BaseController
             'total' => $active + $inactive,
         ];
     }
+    public function inactiveList()
+    {
+        $historyModel = new InactiveSimModel();
+        $mapModel = new GatewayIpMapModel();
+
+        $selectedGateway = $this->request->getGet('gateway');
+
+        $builder = $historyModel
+            ->select("
+                sim_inactive_history.id,
+                sim_inactive_history.ip_address,
+                sim_inactive_history.sim_id,
+                sim_inactive_history.inactive_since,
+                DATEDIFF(CURDATE(), sim_inactive_history.inactive_since) AS days_inactive,
+                gateway_ip_map.gateway_name,
+                gateway_ip_map.gateway_no
+            ")
+            ->join(
+                'gateway_ip_map',
+                'gateway_ip_map.ip_address = sim_inactive_history.ip_address',
+                'left'
+            );
+
+        if (!empty($selectedGateway)) {
+            $builder->where('gateway_ip_map.gateway_no', $selectedGateway);
+        }
+
+        $inactiveSims = $builder
+            ->orderBy('gateway_ip_map.gateway_no', 'ASC')
+            ->orderBy('sim_inactive_history.sim_id', 'ASC')
+            ->findAll();
+
+        $gatewayOptions = $mapModel
+            ->orderBy('gateway_no', 'ASC')
+            ->findAll();
+
+        return view('users/inactive_list', [
+            'inactiveSims' => $inactiveSims,
+            'gatewayOptions' => $gatewayOptions,
+            'selectedGateway' => $selectedGateway
+        ]);
+    }
+    
+    public function saveInactiveHistory($filePath)
+    {
+        $historyModel = new InactiveSimModel();
+
+        $spreadsheet = IOFactory::load($filePath);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $rows = $sheet->toArray(null, true, true, true);
+
+        if (empty($rows)) {
+            return;
+        }
+
+        $header = $rows[1];
+
+        $simcolumns = [];
+
+        foreach ($header as $columnLetter => $columnName) {
+            $colName = strtoupper(trim((string) $columnName));
+
+            if (preg_match('/^SIM\s*\d+$/', $colName)) {
+                // Example: B => SIM0, C => SIM1
+                $simcolumns[$columnLetter] = str_replace(' ', '', $colName);
+            }
+        }
+
+        for ($i = 2; $i <= count($rows); $i++) {
+            $row = $rows[$i];
+
+            // Example value: GW19-144-45
+            $gatewayFull = trim((string) ($row['A'] ?? ''));
+
+            if ($gatewayFull === '') {
+                continue;
+            }
+
+            // Get only the last part.
+            // GW19-144-45 becomes 45
+            $parts = explode('-', $gatewayFull);
+            $ipAddress = trim(end($parts));
+
+            foreach ($simcolumns as $columnLetter => $simId) {
+                $value = strtoupper(trim((string) ($row[$columnLetter] ?? '')));
+
+                $existingHistory = $historyModel
+                    ->where('ip_address', $ipAddress)
+                    ->where('sim_id', $simId)
+                    ->first();
+
+                // GOOD and LOW are active
+                if ($value === 'GOOD' || $value === 'LOW') {
+
+                    // If SIM became active again, remove inactive history
+                    if ($existingHistory) {
+                        $historyModel->delete($existingHistory['id']);
+                    }
+
+                } else {
+
+                    // Anything not GOOD or LOW is inactive
+                    if (!$existingHistory) {
+                        $historyModel->insert([
+                            'ip_address' => $ipAddress,
+                            'sim_id' => $simId,
+                            'inactive_since' => date('Y-m-d'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+                    } else {
+                        // Keep original inactive_since.
+                        // Only update updated_at.
+                        $historyModel->update($existingHistory['id'], [
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+                    }
+                }
+            }
+        }
+    }
 
     public function uploadExcel()
     {
@@ -335,8 +458,14 @@ class Users extends BaseController
 
         $file->move($uploadPath, $newFileName);
 
+        // Full path of uploaded Excel/CSV
+        $filePath = $uploadPath . $newFileName;
+
+        // Save inactive history here
+        $this->saveInactiveHistory($filePath);
+
         return redirect()->to(base_url('users/dashboard'))
-            ->with('success', 'Inventory file uploaded successfully.');
+            ->with('success', 'Inventory file uploaded and scanned successfully.');
     }
 
     public function admin_management()
