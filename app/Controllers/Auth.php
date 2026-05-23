@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\AdminModel;
 
 class Auth extends BaseController
@@ -22,30 +21,26 @@ class Auth extends BaseController
 
         $admin = $model->where('username', $username)->first();
 
-        echo password_hash('admin123', PASSWORD_DEFAULT);
+        if (!$admin) {
+            return redirect()->back()->with('error', 'Username not found');
+        }
 
-        if ($admin)
-            {
-                if(password_verify($password, $admin['password']))
-                    {
-                    
-                session()->set([
-                    'admin_id' => $admin['id'],
-                    'username' => $admin['username'],
-                    'isLoggedIn' => true
-                ]);
+        if (!password_verify($password, $admin['password'])) {
+            return redirect()->back()->with('error', 'Invalid Password');
+        }
 
-                return redirect()->to(site_url('users/dashboard'));
-                    }else
-                    {
-                    return redirect()->back()->with('error', 'Invalid Password');
-                        
-                    }
-            }
-            else{
-                return redirect()->back()->with('error', 'Username not found');
-            }
+        session()->set([
+            'admin_id'   => $admin['id'],
+            'username'   => $admin['username'],
+            'role'       => $admin['role'],
+            'isLoggedIn' => true,
+        ]);
 
+        if ($admin['role'] === 'superadmin') {
+            return redirect()->to('/users/admin_management');
+        }
+
+        return redirect()->to('/users/dashboard');
     }
 
     public function logout()

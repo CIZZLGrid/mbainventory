@@ -6,15 +6,15 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
 
-class Guest implements FilterInterface
+class SuperAdminFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (session()->get('isLoggedIn')) {
-            if (session()->get('role') === 'superadmin') {
-                return redirect()->to('/users/admin_management');
-            }
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/auth/login');
+        }
 
+        if (session()->get('role') !== 'superadmin') {
             return redirect()->to('/users/dashboard');
         }
     }

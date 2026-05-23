@@ -1007,7 +1007,7 @@ select.form-control {
     border-radius: 18px;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
     border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }

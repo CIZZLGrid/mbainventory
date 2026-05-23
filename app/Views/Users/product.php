@@ -72,6 +72,7 @@
                         <th>
                             <input type="checkbox" id="selectAll">
                         </th>
+                        <th>User</th>
                         <th>Slot</th>
                         <th>SIM ID</th>
                         <th>Mobile Number</th>
@@ -114,6 +115,31 @@
                                 <option value="23">23</option>
                                 <option value="24">24</option>
                                 <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                                <option value="32">32</option>
+                                <option value="33">33</option>
+                                <option value="34">34</option>
+                                <option value="35">35</option>
+                                <option value="36">36</option>
+                                <option value="37">37</option>
+                                <option value="38">38</option>
+                                <option value="39">39</option>
+                                <option value="40">40</option>
+                                <option value="41">41</option>
+                                <option value="42">42</option>
+                                <option value="43">43</option>
+                                <option value="44">44</option>
+                                <option value="45">45</option>
+                                <option value="46">46</option>
+                                <option value="47">47</option>
+                                <option value="48">48</option>
+                                <option value="49">49</option>
+                                <option value="50">50</option>
                             </select>
                         </th>
 
@@ -136,9 +162,16 @@
                                 <option value="10.23.144.57">10.23.144.57</option>
                                 <option value="10.23.144.58">10.23.144.58</option>
                                 <option value="10.23.144.59">10.23.144.59</option>
+                                <option value="10.23.144.60">10.23.144.60</option>
+                                <option value="10.23.144.61">10.23.144.61</option>
+                                <option value="10.23.144.62">10.23.144.62</option>
+                                <option value="10.23.144.63">10.23.144.63</option>
+                                <option value="10.23.144.64">10.23.144.64</option>
+                                <option value="10.23.144.65">10.23.144.65</option>
+                                <option value="10.23.144.66">10.23.144.66</option>
+                                <option value="10.23.144.67">10.23.144.67</option>
                                 <option value="10.23.144.68">10.23.144.68</option>
                                 <option value="10.23.144.69">10.23.144.69</option>
-                                <option value="10.23.144.60">10.23.144.60</option>
                                 <option value="10.23.144.70">10.23.144.70</option>
                                 <option value="10.23.144.71">10.23.144.71</option>
                                 <option value="10.23.144.72">10.23.144.72</option>
@@ -146,8 +179,25 @@
                                 <option value="10.23.144.74">10.23.144.74</option>
                                 <option value="10.23.144.75">10.23.144.75</option>
                                 <option value="10.23.144.76">10.23.144.76</option>
-                                <option value="10.23.144.77">10.23.144.77</option>
-                                <option value="10.23.144.78">10.23.144.78</option>
+                                <option value="10.23.144.150">10.23.144.150</option>
+                                <option value="10.23.144.151">10.23.144.151</option>
+                                <option value="10.23.144.152">10.23.144.152</option>
+                                <option value="10.23.144.153">10.23.144.153</option>
+                                <option value="10.23.144.154">10.23.144.154</option>
+                                <option value="10.23.144.155">10.23.144.155</option>
+                                <option value="10.23.144.156">10.23.144.156</option>
+                                <option value="10.23.144.157">10.23.144.157</option>
+                                <option value="10.23.144.158">10.23.144.158</option>
+                                <option value="10.23.144.159">10.23.144.159</option>
+                                <option value="10.23.144.160">10.23.144.160</option>
+                                <option value="10.23.144.161">10.23.144.161</option>
+                                <option value="10.23.144.162">10.23.144.162</option>
+                                <option value="10.23.144.163">10.23.144.163</option>
+                                <option value="10.23.144.164">10.23.144.164</option>
+                                <option value="10.23.144.165">10.23.144.165</option>
+                                <option value="10.23.144.166">10.23.144.166</option>
+                                <option value="10.23.144.167">10.23.144.167</option>
+
 
                             </select>
                         </th>
@@ -184,6 +234,9 @@
                                 value="<?= $sim['id'] ?>" 
                                 class="rowCheckbox"
                             >
+                        </td>
+                        <td>
+                            <?= esc($sim['added_by'] ?? '') ?>/<?= esc($sim['edited_by'] ?? '') ?>
                         </td>
                         <td><?= $sim['sim_gateway'] ?></td>
                         <td><?= $sim['sim_id'] ?></td>

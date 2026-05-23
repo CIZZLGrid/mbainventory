@@ -8,15 +8,14 @@ class AdminSeeder extends Seeder
 {
     public function run()
     {
+        $this->db->table('admin')->truncate();
+
         $data = [
             'username' => 'admin',
             'password' => password_hash('admin123', PASSWORD_DEFAULT),
+            'role'     => 'superadmin',
         ];
 
-        // First, delete existing admin record
-        $this->db->table('admin')->truncate();
-
-        // Then insert new one
         $this->db->table('admin')->insert($data);
     }
 }

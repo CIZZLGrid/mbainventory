@@ -30,7 +30,6 @@
         </div>
         <div class="info-text login">
             <h2>Welcome Back!</h2>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
         </div>
     </div>
     

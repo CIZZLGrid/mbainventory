@@ -10,6 +10,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\InactiveSimModel;
 use App\Models\GatewayIpMapModel;
+use App\Models\AdminModel;
 
 class Users extends BaseController
 {
@@ -50,6 +51,8 @@ class Users extends BaseController
         $model = new UserModel();
 
         $model->save([
+            'added_by'  => session()->get('username'),
+            'edited_by' => session()->get('username'),
             'sim_gateway' => $this->request->getPost('sim_gateway'),
             'sim_id' => $this->request->getPost('sim_id'),
             'sim_no' => $this->request->getPost('sim_no'),
@@ -69,6 +72,8 @@ class Users extends BaseController
         $model = new UserModel();
 
         $model->save([
+            'added_by'  => session()->get('username'),
+            'edited_by' => session()->get('username'),
             'sim_gateway' => $this->request->getPost('sim_gateway'),
             'sim_id' => $this->request->getPost('sim_id'),
             'sim_no' => $this->request->getPost('sim_no'),
@@ -96,6 +101,7 @@ class Users extends BaseController
         $model = new UserModel();
 
         $model->update($id, [
+            'edited_by' => session()->get('username'),
             'sim_gateway' => $this->request->getPost('sim_gateway'),
             'sim_id' => $this->request->getPost('sim_id'),
             'sim_no' => $this->request->getPost('sim_no'),
@@ -359,12 +365,12 @@ class Users extends BaseController
         $header = $rows[1];
 
         $simcolumns = [];
+        $latestExcelKeys = [];
 
         foreach ($header as $columnLetter => $columnName) {
             $colName = strtoupper(trim((string) $columnName));
 
             if (preg_match('/^SIM\s*\d+$/', $colName)) {
-                // Example: B => SIM0, C => SIM1
                 $simcolumns[$columnLetter] = str_replace(' ', '', $colName);
             }
         }
@@ -372,37 +378,32 @@ class Users extends BaseController
         for ($i = 2; $i <= count($rows); $i++) {
             $row = $rows[$i];
 
-            // Example value: GW19-144-45
             $gatewayFull = trim((string) ($row['A'] ?? ''));
 
             if ($gatewayFull === '') {
                 continue;
             }
 
-            // Get only the last part.
-            // GW19-144-45 becomes 45
             $parts = explode('-', $gatewayFull);
             $ipAddress = trim(end($parts));
 
             foreach ($simcolumns as $columnLetter => $simId) {
                 $value = strtoupper(trim((string) ($row[$columnLetter] ?? '')));
 
+                // Save every cell that exists in the latest Excel
+                $key = $ipAddress . '|' . $simId;
+                $latestExcelKeys[] = $key;
+
                 $existingHistory = $historyModel
                     ->where('ip_address', $ipAddress)
                     ->where('sim_id', $simId)
                     ->first();
 
-                // GOOD and LOW are active
                 if ($value === 'GOOD' || $value === 'LOW') {
-
-                    // If SIM became active again, remove inactive history
                     if ($existingHistory) {
                         $historyModel->delete($existingHistory['id']);
                     }
-
                 } else {
-
-                    // Anything not GOOD or LOW is inactive
                     if (!$existingHistory) {
                         $historyModel->insert([
                             'ip_address' => $ipAddress,
@@ -411,13 +412,22 @@ class Users extends BaseController
                             'updated_at' => date('Y-m-d H:i:s'),
                         ]);
                     } else {
-                        // Keep original inactive_since.
-                        // Only update updated_at.
                         $historyModel->update($existingHistory['id'], [
                             'updated_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
                 }
+            }
+        }
+
+        // Delete database records that no longer exist in latest Excel
+        $oldRows = $historyModel->findAll();
+
+        foreach ($oldRows as $old) {
+            $oldKey = trim($old['ip_address']) . '|' . strtoupper(trim($old['sim_id']));
+
+            if (!in_array($oldKey, $latestExcelKeys)) {
+                $historyModel->delete($old['id']);
             }
         }
     }
@@ -470,7 +480,50 @@ class Users extends BaseController
 
     public function admin_management()
     {
-        return view('users/admin_management');
+        $model = new AdminModel();
+
+        $data['admins'] = $model
+            ->where('role', 'admin')
+            ->findAll();
+
+        return view('users/admin_management', $data);
+    }
+
+    public function add_admin()
+    {
+        $model = new AdminModel();
+
+        $username = $this->request->getPost('username');
+        $password = $this->request->getPost('password');
+
+        $existing = $model->where('username', $username)->first();
+
+        if ($existing) {
+            return redirect()->back()->with('error', 'Username already exists.');
+        }
+
+        $model->save([
+            'username' => $username,
+            'password' => $password,
+            'role' => 'admin',
+        ]);
+
+        return redirect()->back()->with('success', 'Admin added successfully.');
+    }
+
+    public function delete_admin($id)
+    {
+        $model = new AdminModel();
+
+        $admin = $model->find($id);
+
+        if (!$admin || $admin['role'] === 'superadmin') {
+            return redirect()->back()->with('error', 'Cannot delete this account.');
+        }
+
+        $model->delete($id);
+
+        return redirect()->back()->with('success', 'Admin deleted successfully.');
     }
 
 }

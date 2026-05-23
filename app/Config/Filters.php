@@ -14,6 +14,8 @@ use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\AuthFilter;
 use App\Filters\Guest;
+use App\Filters\SuperAdminFilter;
+use App\Filters\AdminOnlyFilter;
 
 class Filters extends BaseFilters
 {
@@ -38,6 +40,8 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'authfilter'    => AuthFilter::class,
         'guest'         => Guest::class,
+        'superadmin'    => SuperAdminFilter::class,
+        'adminonly'     => AdminOnlyFilter::class,
     ];
 
     /**
