@@ -119,17 +119,25 @@ class Users extends BaseController
     {
         $selectedIds = $this->request->getPost('selected_ids');
 
-        if (!$selectedIds) {
+        if (empty($selectedIds) || !is_array($selectedIds)) {
             return redirect()->back()->with('error', 'No rows selected.');
         }
 
-        $selectedIds = array_map('intval', $selectedIds);
+        $selectedIds = array_filter(array_map('intval', $selectedIds));
 
-        $model = new SimModel();
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', 'Invalid selected rows.');
+        }
 
-        $model->whereIn('id', $selectedIds)->delete();
+        $model = new UserModel();
 
-        return redirect()->back()->with('success', 'Selected rows deleted successfully.');
+        try {
+            $model->whereIn('id', $selectedIds)->delete();
+
+            return redirect()->back()->with('success', 'Selected rows deleted successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
     public function gateway_visual()
     {
@@ -524,6 +532,58 @@ class Users extends BaseController
         $model->delete($id);
 
         return redirect()->back()->with('success', 'Admin deleted successfully.');
+    }
+    public function edit_admin($id)
+    {
+        $model = new AdminModel();
+
+        $admin = $model->find($id);
+
+        if (!$admin || $admin['role'] === 'superadmin') {
+            return redirect()->to('/users/admin_management')
+                ->with('error', 'Cannot edit this account.');
+        }
+
+        return view('users/edit_admin', [
+            'admin' => $admin
+        ]);
+    }
+
+    public function update_admin($id)
+    {
+        $model = new AdminModel();
+
+        $admin = $model->find($id);
+
+        if (!$admin || $admin['role'] === 'superadmin') {
+            return redirect()->to('/users/admin_management')
+                ->with('error', 'Cannot update this account.');
+        }
+
+        $username = $this->request->getPost('username');
+        $password = $this->request->getPost('password');
+
+        $existing = $model
+            ->where('username', $username)
+            ->where('id !=', $id)
+            ->first();
+
+        if ($existing) {
+            return redirect()->back()->with('error', 'Username already exists.');
+        }
+
+        $data = [
+            'username' => $username,
+        ];
+
+        if (!empty($password)) {
+            $data['password'] = $password;
+        }
+
+        $model->update($id, $data);
+
+        return redirect()->to('/users/admin_management')
+            ->with('success', 'Admin updated successfully.');
     }
 
 }

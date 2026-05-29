@@ -156,6 +156,24 @@
     color: #f87171;
     border: 1px solid rgba(220,38,38,0.4);
 }
+.edit-btn {
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.edit-btn:hover {
+    background: #1d4ed8;
+}
+
+.delete-form {
+    display: inline-block;
+}
 </style>
 
 <div class="main-content">
@@ -216,17 +234,21 @@
                             <td><?= esc($admin['username']) ?></td>
                             <td><?= esc($admin['role']) ?></td>
                             <td>
-                                <form method="POST" action="<?= base_url('/users/delete_admin/' . $admin['id']) ?>" class="delete-form">
-                                <?= csrf_field() ?>
+                                <a href="<?= base_url('/users/edit_admin/' . $admin['id']) ?>" class="edit-btn">
+                                    Edit
+                                </a>
 
-                                <button 
-                                    type="submit" 
-                                    class="delete-btn"
-                                    onclick="return confirm('Delete this admin?')"
-                                >
-                                    Delete
-                                </button>
-                            </form>
+                                <form method="POST" action="<?= base_url('/users/delete_admin/' . $admin['id']) ?>" class="delete-form">
+                                    <?= csrf_field() ?>
+
+                                    <button 
+                                        type="submit" 
+                                        class="delete-btn"
+                                        onclick="return confirm('Delete this admin?')"
+                                    >
+                                        Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

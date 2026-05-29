@@ -42,10 +42,13 @@ $routes->get('/users/export', 'Users::export', ['filter' => 'adminonly']);
 $routes->post('/users/upload-excel', 'Users::uploadExcel', ['filter' => 'adminonly']);
 $routes->get('/users/inactive-list', 'Users::inactiveList', ['filter' => 'adminonly']);
 
+$routes->get('/users/edit_admin/(:num)', 'Users::edit_admin/$1', ['filter' => 'superadmin']);
+$routes->post('/users/update_admin/(:num)', 'Users::update_admin/$1', ['filter' => 'superadmin']);
 
 
 
 
+?>
 
 
 
