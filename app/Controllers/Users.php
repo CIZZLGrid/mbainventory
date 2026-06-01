@@ -11,16 +11,84 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\InactiveSimModel;
 use App\Models\GatewayIpMapModel;
 use App\Models\AdminModel;
+use App\Models\SimArchive;
 
 class Users extends BaseController
 {
-    public function delete($id)
+    public function restore($id)
     {
-        $model = new UserModel();
+        $model = new SimArchive();
+        $activeModel = new UserModel();
+
+        $sim = $model->find($id);
+
+        if (!$sim)
+            {
+                return redirect()->to('users/product')->with('error', 'Sim not found');
+            }
+
+        $activeData =
+        [
+            'id' => $sim['original_id'],
+            'added_by'  => $sim['added_by'],
+            'edited_by' => $sim['edited_by'],
+            'sim_gateway' => $sim['sim_gateway'],
+            'sim_id' => $sim['sim_id'],
+            'sim_no' => $sim['sim_no'],
+            'operator' => $sim['operator'],
+            'gateway' => $sim['gateway'],
+            'ip_address' => $sim['ip_address'],
+            'plan' => $sim['plan'],
+            'call_to' => $sim['call_to'],
+            'sms_to' => $sim['sms_to'],
+            'date' => date('Y-m-d H:i:s'),
+        ];
+
+        $activeModel->insert($activeData);
 
         $model->delete($id);
 
-        return redirect()->to('/users/product');
+        return redirect()->back()->with('success', 'Sim restored successfully');
+
+
+
+    }
+    public function delete($id)
+    {
+        $model = new UserModel();
+        $archiveModel = new SimArchive();
+
+        $sim = $model->find($id);
+
+        if (!$sim)
+            {
+                return redirect()->to('users/product')->with('error', 'Sim not found');
+            }
+
+        $archiveData =
+        [
+            'original_id' => $sim['id'],
+            'added_by' => $sim['added_by'],
+            'edited_by' => $sim['edited_by'],
+            'sim_gateway' => $sim['sim_gateway'],
+            'sim_id' => $sim['sim_id'],
+            'sim_no' => $sim['sim_no'],
+            'operator' => $sim['operator'],
+            'gateway' => $sim['gateway'],
+            'ip_address' => $sim['ip_address'],
+            'plan' => $sim['plan'],
+            'call_to' => $sim['call_to'],
+            'sms_to' => $sim['sms_to'],
+            'archived_by' => session()->get('username'),
+            'archived_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $archiveModel->save($archiveData);
+
+        $model->delete($id);
+
+        return redirect()->back()->with('success', 'Sim delete and archived successflly');
+
     }
     public function product()
     {
@@ -584,6 +652,17 @@ class Users extends BaseController
 
         return redirect()->to('/users/admin_management')
             ->with('success', 'Admin updated successfully.');
+    }
+
+    public function archived_sims()
+    {
+        $model = new SimArchive();
+
+        $data['archived_sims'] = $model
+            ->orderBy('archived_at', 'DESC')
+            ->findAll();
+
+            return view('users/archived_sims', $data);
     }
 
 }

@@ -52,6 +52,16 @@
             </a>
         </li>
 
+    <?php if (session()->get('role') === 'superadmin'): ?>
+
+        <li>
+            <a class="manage" href="<?= base_url('/users/archived_sims') ?>">
+                <i class="fa fa-trash"></i> Archived Sims
+            </a>
+        </li>
+
+    <?php endif; ?>    
+
     </ul>
 </div>
 

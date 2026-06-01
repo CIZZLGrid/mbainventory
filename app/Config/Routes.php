@@ -45,6 +45,11 @@ $routes->get('/users/inactive-list', 'Users::inactiveList', ['filter' => 'admino
 $routes->get('/users/edit_admin/(:num)', 'Users::edit_admin/$1', ['filter' => 'superadmin']);
 $routes->post('/users/update_admin/(:num)', 'Users::update_admin/$1', ['filter' => 'superadmin']);
 
+$routes->get('/users/archived_sims', 'Users::archived_sims', ['filter' => 'superadmin']);
+
+$routes->get('/users/restore/(:num)', 'Users::restore/$1', ['filter' => 'superadmin']);
+
+
 
 
 

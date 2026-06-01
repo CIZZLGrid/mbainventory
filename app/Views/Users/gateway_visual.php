@@ -85,8 +85,9 @@ foreach ($sims as $sim) {
 
                 <div class="gateway-header">
                     <div>
+                        <h3>IP Address: <?= esc($gatewayIp) ?></h3>
                         <h2>Gateway <?= esc($gw) ?></h2>
-                        <p>IP Address: <?= esc($gatewayIp) ?></p>
+                    
                         <p>32 SIM Slots</p>
                     </div>
 
