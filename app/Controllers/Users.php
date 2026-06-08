@@ -303,6 +303,22 @@ class Users extends BaseController
             $data = $this->scanExcelFile($filePath);
         }
 
+        // Database SIM counts
+        $model = new UserModel();
+
+        $activeSims = $model
+            ->where('plan', 'ACTIVE')
+            ->countAllResults();
+
+        $inactiveSims = (new UserModel())
+            ->where('plan', 'INACTIVE')
+            ->countAllResults();
+
+        // Add to existing data array
+        $data['dbactive'] = $activeSims;
+        $data['dbinactive'] = $inactiveSims;
+        $data['dbtotal'] = $activeSims + $inactiveSims;
+
         return view('users/dashboard', $data);
     }
 
@@ -664,6 +680,5 @@ class Users extends BaseController
 
             return view('users/archived_sims', $data);
     }
-
 }
 

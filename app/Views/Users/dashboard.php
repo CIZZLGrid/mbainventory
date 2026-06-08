@@ -20,7 +20,7 @@
     <div class="dashboard-title">
         <div>
             <h1>SIM Inventory Dashboard</h1>
-            <p>Daily Excel-based SIM status overview</p>
+            <h2>Daily Excel-based SIM status overview</h2>
         </div>
 
         <a href="<?= base_url('users/inactive-list') ?>" class="inactive-link">
@@ -98,7 +98,7 @@
         <div class="chart-card">
             <div class="section-header">
                 <div>
-                    <h3>SIM Status Overview</h3>
+                    <h3>EXCEL-BASED SIM Status Overview</h3>
                     <p>Active vs inactive SIM cards from the latest uploaded file</p>
                 </div>
             </div>
@@ -135,6 +135,76 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="dashboard-title">
+        <div>
+            <h2>SIM status overview</h2>
+        </div>
+
+       
+    </div>
+
+    <div class="stats-grid">
+        <div class="card stat-card border-left-primary">
+                <div class="card-body">
+                    <div class="stat-layout">
+                        <div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                Active Simcards
+                            </div>
+
+                            <div class="h5 mb-0 font-weight-bold text-white-800">
+                                <?= $dbactive ?? 0 ?>   
+                            </div>
+                        </div>
+
+                        <div class="stat-icon green">
+                            <i class="fas fa-sim-card"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="card stat-card border-left-success">
+            <div class="card-body">
+                <div class="stat-layout">
+                    <div>
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                Inactive Simcards
+                        </div>
+
+                        <div class="h5 mb-0 font-weight-bold text-white-800">
+                            <?= $dbinactive ?? 0 ?>
+                        </div>
+                    </div>
+
+                    <div class="stat-icon red">
+                        <i class="fas fa-sim-card"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card stat-card border-left-info">
+            <div class="card-body">
+                <div class="stat-layout">
+                    <div>
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                            Total Simcards
+                        </div>
+
+                        <div class="h5 mb-0 font-weight-bold text-white-800">
+                            <?= $dbtotal ?? 0 ?>
+                        </div>
+                    </div>
+
+                    <div class="stat-icon blue">
+                        <i class="fas fa-sim-card"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
