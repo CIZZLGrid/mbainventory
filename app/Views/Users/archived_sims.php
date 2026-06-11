@@ -17,6 +17,20 @@
         </a>
     </div>
 
+        <div class="inventory-toolbar">
+            <form method="GET" action="" class="search-form">
+                <div class="search-box">
+                    <i class="fa fa-search"></i>
+                    <input 
+                        type="number" 
+                        name="search" 
+                        id="searchInput" 
+                        placeholder="Search SIM card number..."
+                    />
+                </div>
+            </form>
+        </div>
+
     <div class="inactive-card">
 
         <div class="table-wrapper">
@@ -82,6 +96,21 @@
 
 </div>
 
+    <script>
+        function applyArchivedSearch() {
+            let searchValue = document.getElementById('searchInput').value.toLowerCase().trim();
+            let rows = document.querySelectorAll('.inactive-table tbody tr');
+
+            rows.forEach(function(row) {
+                let simNo = row.cells[2]?.textContent.toLowerCase().trim() || '';
+                let matchSearch = !searchValue || simNo.includes(searchValue);
+
+                row.style.display = matchSearch ? '' : 'none';
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', applyArchivedSearch);
+    </script>
 </body>
 
 <?php include(APPPATH.'Views/layout/footer.php'); ?>

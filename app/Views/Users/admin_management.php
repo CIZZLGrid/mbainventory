@@ -5,7 +5,7 @@
 .main-content {
     margin-left: 240px;
     padding: 30px;
-    background: #0f172a;
+    background: #0f1419;
     min-height: 100vh;
     color: #fff;
     position: relative;
@@ -14,7 +14,7 @@
 
 .card {
     background: #111827;
-    border: 1px solid #2b3548;
+    background: #111923;
     border-radius: 14px;
     padding: 25px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);

@@ -52,8 +52,8 @@
                 <div class="form-group full">
                     <label>Operator</label>
                     <select name="operator" class="form-control">
-                        <option value="GLOBE">GLOBE</option>
-                        <option value="SMART">SMART</option>
+                        <option value="GLOBE" <?= isset($sims['operator']) && strtoupper($sims['operator']) === 'GLOBE' ? 'selected' : '' ?>>GLOBE</option>
+                        <option value="SMART" <?= isset($sims['operator']) && strtoupper($sims['operator']) === 'SMART' ? 'selected' : '' ?>>SMART</option>
                     </select>
                 </div>
 

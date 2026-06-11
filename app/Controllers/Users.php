@@ -314,7 +314,6 @@ class Users extends BaseController
             ->where('plan', 'INACTIVE')
             ->countAllResults();
 
-        // Add to existing data array
         $data['dbactive'] = $activeSims;
         $data['dbinactive'] = $inactiveSims;
         $data['dbtotal'] = $activeSims + $inactiveSims;
@@ -359,7 +358,6 @@ class Users extends BaseController
             ];
         }
 
-        // First row: GATEWAY, SIM0, SIM1, SIM2...
         $header = $rows[1];
 
         $simcolumns = [];
