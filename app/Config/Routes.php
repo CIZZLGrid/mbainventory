@@ -48,6 +48,9 @@ $routes->post('/users/update_admin/(:num)', 'Users::update_admin/$1', ['filter' 
 $routes->get('/users/archived_sims', 'Users::archived_sims', ['filter' => 'superadmin']);
 
 $routes->get('/users/restore/(:num)', 'Users::restore/$1', ['filter' => 'superadmin']);
+$routes->get('/users/delete_archived/(:num)', 'Users::delete_archived/$1', ['filter' => 'superadmin']);
+
+
 
 
 

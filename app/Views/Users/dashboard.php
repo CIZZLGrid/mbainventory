@@ -139,7 +139,8 @@
 
     <div class="dashboard-title">
         <div>
-            <h2>SIM status overview</h2>
+            <h2>SIM status overview (Main Office)</h2>
+
         </div>
 
        

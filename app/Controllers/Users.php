@@ -12,6 +12,7 @@ use App\Models\InactiveSimModel;
 use App\Models\GatewayIpMapModel;
 use App\Models\AdminModel;
 use App\Models\SimArchive;
+use App\Libraries\TrustedTime;
 
 class Users extends BaseController
 {
@@ -22,13 +23,29 @@ class Users extends BaseController
 
         $sim = $model->find($id);
 
-        if (!$sim)
-            {
-                return redirect()->to('users/product')->with('error', 'Sim not found');
-            }
+        if (!$sim) {
+            return redirect()->to('users/product')->with('error', 'Sim not found');
+        }
 
-        $activeData =
-        [
+        try {
+            $trustedTime = new TrustedTime();
+            $now = $trustedTime->nowUtc();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Cannot restore SIM because internet time cannot be verified.');
+        }
+
+        if (!empty($sim['restore_until_utc'])) {
+            $restoreUntil = new \DateTimeImmutable($sim['restore_until_utc'], new \DateTimeZone('UTC'));
+
+            if ($now > $restoreUntil) {
+                $model->delete($id);
+
+                return redirect()->to('users/archived_sims')
+                    ->with('error', 'Restore period expired. SIM was permanently deleted.');
+            }
+        }
+
+        $activeData = [
             'id' => $sim['original_id'],
             'added_by'  => $sim['added_by'],
             'edited_by' => $sim['edited_by'],
@@ -41,7 +58,7 @@ class Users extends BaseController
             'plan' => $sim['plan'],
             'call_to' => $sim['call_to'],
             'sms_to' => $sim['sms_to'],
-            'date' => date('Y-m-d H:i:s'),
+            'date' => $now->format('Y-m-d H:i:s'),
         ];
 
         $activeModel->insert($activeData);
@@ -49,9 +66,23 @@ class Users extends BaseController
         $model->delete($id);
 
         return redirect()->back()->with('success', 'Sim restored successfully');
+    }
 
+    public function delete_archived($id)
+    {
+        $model = new SimArchive();
 
+        $sim = $model->find($id);
 
+        if (!$sim) {
+            return redirect()->to('/users/archived_sims')
+                ->with('error', 'Archived SIM not found.');
+        }
+
+        $model->delete($id);
+
+        return redirect()->to('/users/archived_sims')
+            ->with('success', 'Archived SIM permanently deleted.');
     }
     public function delete($id)
     {
@@ -60,35 +91,45 @@ class Users extends BaseController
 
         $sim = $model->find($id);
 
-        if (!$sim)
-            {
-                return redirect()->to('users/product')->with('error', 'Sim not found');
-            }
+        if (!$sim) {
+            return redirect()->to('users/product')->with('error', 'Sim not found');
+        }
 
-        $archiveData =
-        [
-            'original_id' => $sim['id'],
-            'added_by' => $sim['added_by'],
-            'edited_by' => $sim['edited_by'],
-            'sim_gateway' => $sim['sim_gateway'],
-            'sim_id' => $sim['sim_id'],
-            'sim_no' => $sim['sim_no'],
-            'operator' => $sim['operator'],
-            'gateway' => $sim['gateway'],
-            'ip_address' => $sim['ip_address'],
-            'plan' => $sim['plan'],
-            'call_to' => $sim['call_to'],
-            'sms_to' => $sim['sms_to'],
-            'archived_by' => session()->get('username'),
-            'archived_at' => date('Y-m-d H:i:s'),
-        ];
+        try {
+            $trustedTime = new TrustedTime();
+            $now = $trustedTime->nowUtc();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Cannot delete SIM because internet time cannot be verified.');
+        }
+
+        $restoreUntil = $now->modify('+30 days');
+
+        $archiveData = [
+                'original_id' => $sim['id'],
+                'added_by' => $sim['added_by'],
+                'edited_by' => $sim['edited_by'],
+                'sim_gateway' => $sim['sim_gateway'],
+                'sim_id' => $sim['sim_id'],
+                'sim_no' => $sim['sim_no'],
+                'operator' => $sim['operator'],
+                'gateway' => $sim['gateway'],
+                'ip_address' => $sim['ip_address'],
+                'plan' => $sim['plan'],
+                'call_to' => $sim['call_to'],
+                'sms_to' => $sim['sms_to'],
+
+                'archived_by' => session()->get('username'),
+                'archived_at' => $now->format('Y-m-d H:i:s'),
+
+                'deleted_at_utc' => $now->format('Y-m-d H:i:s'),
+                'restore_until_utc' => $restoreUntil->format('Y-m-d H:i:s'),
+            ];
 
         $archiveModel->save($archiveData);
 
         $model->delete($id);
 
-        return redirect()->back()->with('success', 'Sim delete and archived successflly');
-
+        return redirect()->back()->with('success', 'SIM deleted and archived successfully. You have 30 days to restore it.');
     }
     public function product()
     {
@@ -180,7 +221,7 @@ class Users extends BaseController
             'gateway' => $this->request->getPost('gateway'),
             'ip_address' => $this->request->getPost('ip_address'),
         ]);
-         return redirect()->to('/users/product');
+        return redirect()->to('/users/product');
 
     }
     public function deleteSelected()
@@ -198,14 +239,47 @@ class Users extends BaseController
         }
 
         $model = new UserModel();
+        $archiveModel = new SimArchive();
 
         try {
-            $model->whereIn('id', $selectedIds)->delete();
-
-            return redirect()->back()->with('success', 'Selected rows deleted successfully.');
-        } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            $trustedTime = new TrustedTime();
+            $now = $trustedTime->nowUtc();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Cannot delete selected SIMs because internet time cannot be verified.');
         }
+
+        $restoreUntil = $now->modify('+30 days');
+
+        $sims = $model->whereIn('id', $selectedIds)->findAll();
+
+        if (empty($sims)) {
+            return redirect()->back()->with('error', 'No SIM records found.');
+        }
+
+        foreach ($sims as $sim) {
+            $archiveModel->save([
+                'original_id' => $sim['id'],
+                'added_by' => $sim['added_by'],
+                'edited_by' => $sim['edited_by'],
+                'sim_gateway' => $sim['sim_gateway'],
+                'sim_id' => $sim['sim_id'],
+                'sim_no' => $sim['sim_no'],
+                'operator' => $sim['operator'],
+                'gateway' => $sim['gateway'],
+                'ip_address' => $sim['ip_address'],
+                'plan' => $sim['plan'],
+                'call_to' => $sim['call_to'],
+                'sms_to' => $sim['sms_to'],
+                'archived_by' => session()->get('username'),
+                'archived_at' => $now->format('Y-m-d H:i:s'),
+                'deleted_at_utc' => $now->format('Y-m-d H:i:s'),
+                'restore_until_utc' => $restoreUntil->format('Y-m-d H:i:s'),
+            ]);
+        }
+
+        $model->whereIn('id', $selectedIds)->delete();
+
+        return redirect()->back()->with('success', 'Selected SIMs deleted and moved to archive successfully.');
     }
     public function gateway_visual()
     {
@@ -672,11 +746,37 @@ class Users extends BaseController
     {
         $model = new SimArchive();
 
-        $data['archived_sims'] = $model
+        try {
+            $trustedTime = new TrustedTime();
+            $now = $trustedTime->nowUtc();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Cannot load archive because internet time cannot be verified.');
+        }
+
+        // Permanently delete expired archived SIMs
+        $model
+            ->where('restore_until_utc IS NOT NULL')
+            ->where('restore_until_utc <=', $now->format('Y-m-d H:i:s'))
+            ->delete();
+
+        // Load only non-expired archived SIMs
+        $archivedSims = $model
+            ->where('restore_until_utc IS NOT NULL')
+            ->where('restore_until_utc >', $now->format('Y-m-d H:i:s'))
             ->orderBy('archived_at', 'DESC')
             ->findAll();
 
-            return view('users/archived_sims', $data);
+        foreach ($archivedSims as &$sim) {
+            $restoreUntil = new \DateTimeImmutable($sim['restore_until_utc'], new \DateTimeZone('UTC'));
+
+            $secondsLeft = $restoreUntil->getTimestamp() - $now->getTimestamp();
+
+            $sim['days_left'] = max(0, ceil($secondsLeft / 86400));
+        }
+
+        $data['archived_sims'] = $archivedSims;
+
+        return view('users/archived_sims', $data);
     }
 }
 

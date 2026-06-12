@@ -12,7 +12,8 @@ class SimArchive extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['original_id', 'added_by', 'edited_by' ,'sim_gateway', 'sim_id', 'sim_no', 'operator', 'gateway', 'ip_address' , 'plan', 'call_to', 'sms_to', 'archived_by', 'archived_at', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['original_id', 'added_by', 'edited_by' ,'sim_gateway', 'sim_id', 'sim_no', 'operator', 'gateway', 'ip_address' , 'plan', 'call_to', 'sms_to', 'archived_by', 'archived_at', 
+    'created_at', 'updated_at', 'restore_until_utc', 'deleted_at_utc'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
